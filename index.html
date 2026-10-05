@@ -1,0 +1,2761 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <title>پنل VIP کائنات‌چی</title>
+
+  <style>
+    :root {
+      --cream: #f4efe4;
+      --cream-light: #fbf8f0;
+
+      --green: #244f3d;
+      --green-dark: #183b2d;
+      --green-soft: #6f8e7d;
+      --leaf: #557963;
+
+      --page-bg: #f4efe4;
+      --page-bg-2: #faf7ef;
+
+      --glass: rgba(255, 255, 255, .48);
+      --glass-strong: rgba(255, 255, 255, .68);
+      --glass-soft: rgba(255, 255, 255, .34);
+
+      --border: rgba(255, 255, 255, .72);
+      --border-soft: rgba(92, 124, 105, .16);
+
+      --text: #24352c;
+      --muted: #718077;
+
+      --danger: #9b4545;
+      --success: #285e3d;
+      --info: #315b70;
+
+      --shadow:
+        0 18px 45px rgba(42, 62, 50, .10);
+
+      --shadow-deep:
+        0 24px 55px rgba(31, 67, 49, .16);
+    }
+
+    html[data-theme="dark"] {
+      --page-bg: #101713;
+      --page-bg-2: #16211b;
+
+      --glass: rgba(28, 40, 33, .68);
+      --glass-strong: rgba(35, 49, 41, .78);
+      --glass-soft: rgba(255, 255, 255, .055);
+
+      --border: rgba(255, 255, 255, .11);
+      --border-soft: rgba(255, 255, 255, .10);
+
+      --text: #f1eee6;
+      --muted: #aebbb3;
+
+      --green: #9bbba8;
+      --green-dark: #e3eee7;
+      --green-soft: #8fae9c;
+      --leaf: #759982;
+
+      --shadow:
+        0 20px 48px rgba(0, 0, 0, .25);
+
+      --shadow-deep:
+        0 28px 65px rgba(0, 0, 0, .32);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--page-bg);
+      color-scheme: light;
+      transition: background .3s ease;
+    }
+
+    html[data-theme="dark"] {
+      color-scheme: dark;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Segoe UI",
+        Tahoma,
+        Arial,
+        sans-serif;
+
+      color: var(--text);
+      direction: rtl;
+
+      background:
+        radial-gradient(
+          circle at 10% 7%,
+          rgba(108, 143, 121, .16),
+          transparent 27%
+        ),
+        radial-gradient(
+          circle at 94% 21%,
+          rgba(108, 143, 121, .12),
+          transparent 26%
+        ),
+        linear-gradient(
+          145deg,
+          var(--page-bg-2) 0%,
+          var(--page-bg) 50%,
+          var(--page-bg-2) 100%
+        );
+
+      overflow-x: hidden;
+      transition:
+        background .3s ease,
+        color .3s ease;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+
+      background:
+        radial-gradient(
+          circle at 50% 0%,
+          rgba(255,255,255,.50),
+          transparent 42%
+        ),
+        linear-gradient(
+          120deg,
+          rgba(255,255,255,.08),
+          transparent 45%
+        );
+
+      z-index: 0;
+    }
+
+    html[data-theme="dark"] body::before {
+      background:
+        radial-gradient(
+          circle at 50% 0%,
+          rgba(126, 170, 143, .07),
+          transparent 42%
+        ),
+        linear-gradient(
+          120deg,
+          rgba(255,255,255,.025),
+          transparent 45%
+        );
+    }
+
+    button,
+    input {
+      font-family: inherit;
+    }
+
+    button {
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .app {
+      position: relative;
+      z-index: 1;
+
+      width: min(100%, 720px);
+      margin: 0 auto;
+
+      padding:
+        max(18px, env(safe-area-inset-top))
+        16px
+        max(30px, env(safe-area-inset-bottom))
+        16px;
+    }
+
+    /* ==========================================
+       Botanical
+    ========================================== */
+
+    .botanical {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .branch {
+      position: absolute;
+      width: 230px;
+      height: 390px;
+      opacity: .28;
+      filter: blur(.15px);
+    }
+
+    .branch::before {
+      content: "";
+      position: absolute;
+
+      width: 4px;
+      height: 330px;
+
+      border-radius: 999px;
+
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(62, 100, 78, .04),
+          rgba(62, 100, 78, .48)
+        );
+    }
+
+    .branch::after {
+      content: "🍃";
+
+      position: absolute;
+
+      font-size: 30px;
+      line-height: 1;
+
+      color: var(--leaf);
+
+      text-shadow:
+        25px 55px 0 rgba(85,121,99,.68),
+        -20px 105px 0 rgba(85,121,99,.54),
+        34px 165px 0 rgba(85,121,99,.50),
+        -18px 220px 0 rgba(85,121,99,.40),
+        30px 280px 0 rgba(85,121,99,.34);
+    }
+
+    .branch-left {
+      top: -60px;
+      left: -105px;
+      transform: rotate(-13deg);
+    }
+
+    .branch-right {
+      top: 90px;
+      right: -130px;
+      transform: rotate(17deg) scaleX(-1);
+      opacity: .20;
+    }
+
+    .branch-bottom {
+      bottom: -220px;
+      left: 10px;
+      transform: rotate(8deg);
+      opacity: .15;
+    }
+
+    /* ==========================================
+       Luxury Header
+    ========================================== */
+
+    .luxury-header {
+      position: relative;
+      overflow: hidden;
+
+      margin: 4px 0 18px;
+      padding: 24px 21px 23px;
+
+      border-radius: 30px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(53, 59, 50, .99),
+          rgba(38, 73, 55, .97)
+        );
+
+      border: 1px solid rgba(255,255,255,.12);
+
+      box-shadow:
+        0 22px 48px rgba(23, 75, 56, .22),
+        inset 0 1px 0 rgba(255,255,255,.14);
+    }
+
+    .luxury-header::before {
+      content: "";
+
+      position: absolute;
+
+      width: 190px;
+      height: 190px;
+
+      left: -95px;
+      top: -105px;
+
+      border-radius: 50%;
+
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow:
+        0 0 0 18px rgba(255,255,255,.025),
+        0 0 0 38px rgba(255,255,255,.018);
+    }
+
+    .luxury-header::after {
+      content: "✦";
+
+      position: absolute;
+
+      left: 25px;
+      bottom: 17px;
+
+      color: rgba(255,255,255,.12);
+      font-size: 48px;
+      transform: rotate(-12deg);
+    }
+
+    .header-decoration {
+      position: absolute;
+      right: -28px;
+      bottom: -48px;
+
+      width: 155px;
+      height: 155px;
+
+      border-radius: 50%;
+
+      border: 1px solid rgba(255,255,255,.10);
+
+      box-shadow:
+        0 0 0 18px rgba(255,255,255,.025),
+        0 0 0 38px rgba(255,255,255,.018);
+    }
+
+    .header-kicker {
+      position: relative;
+      z-index: 2;
+
+      margin-bottom: 7px;
+
+      color: rgba(255,255,255,.62);
+      font-size: 11px;
+      font-weight: 650;
+      letter-spacing: .3px;
+    }
+
+    .luxury-header h1 {
+      position: relative;
+      z-index: 2;
+
+      margin: 0;
+
+      color: #fff;
+
+      font-size: 25px;
+      line-height: 1.45;
+      font-weight: 780;
+      letter-spacing: -.6px;
+    }
+
+    .luxury-header p {
+      position: relative;
+      z-index: 2;
+
+      margin: 7px 0 0;
+
+      color: rgba(255,255,255,.70);
+
+      font-size: 12px;
+      line-height: 1.9;
+    }
+
+    .header-badge {
+      position: relative;
+      z-index: 2;
+
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+
+      margin-top: 15px;
+      padding: 7px 11px;
+
+      border-radius: 999px;
+
+      color: rgba(255,255,255,.88);
+      background: rgba(255,255,255,.09);
+      border: 1px solid rgba(255,255,255,.12);
+
+      font-size: 10px;
+      font-weight: 650;
+
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08);
+    }
+
+    /* ==========================================
+       Glass
+    ========================================== */
+
+    .glass {
+      position: relative;
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          145deg,
+          var(--glass-strong),
+          var(--glass)
+        );
+
+      border: 1px solid var(--border);
+
+      box-shadow:
+        var(--shadow),
+        inset 0 1px 0 rgba(255,255,255,.72);
+
+      backdrop-filter:
+        blur(24px)
+        saturate(120%);
+
+      -webkit-backdrop-filter:
+        blur(24px)
+        saturate(120%);
+
+      transition:
+        background .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
+    }
+
+    html[data-theme="dark"] .glass {
+      box-shadow:
+        var(--shadow),
+        inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+
+      padding: 21px;
+      margin-bottom: 15px;
+
+      border-radius: 28px;
+    }
+
+    .card::after {
+      content: "";
+
+      position: absolute;
+
+      width: 130px;
+      height: 130px;
+
+      top: -70px;
+      left: -60px;
+
+      border-radius: 50%;
+
+      background: rgba(255,255,255,.16);
+
+      filter: blur(10px);
+
+      pointer-events: none;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      margin: 0 0 17px;
+
+      color: var(--green);
+
+      font-size: 17px;
+      font-weight: 750;
+    }
+
+    .section-title span:first-child {
+      font-size: 21px;
+    }
+
+    /* ==========================================
+       Login
+    ========================================== */
+
+    #loginView {
+      animation: appear .45s ease;
+    }
+
+    .welcome {
+      text-align: center;
+      padding: 25px 19px;
+    }
+
+    .welcome-icon {
+      width: 64px;
+      height: 64px;
+
+      margin: 0 auto 13px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(72,116,89,.17),
+          rgba(255,255,255,.36)
+        );
+
+      border: 1px solid var(--border);
+
+      box-shadow:
+        0 12px 28px rgba(42,62,50,.08),
+        inset 0 1px 0 rgba(255,255,255,.72);
+
+      font-size: 30px;
+    }
+
+    .welcome h2 {
+      margin: 0;
+
+      font-size: 20px;
+      color: var(--green-dark);
+    }
+
+    .welcome p {
+      margin: 8px 0 0;
+
+      color: var(--muted);
+
+      font-size: 13px;
+      line-height: 1.9;
+    }
+
+    label {
+      display: block;
+
+      margin-bottom: 8px;
+
+      color: var(--green-dark);
+
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    input {
+      width: 100%;
+      height: 52px;
+
+      padding: 0 16px;
+
+      border-radius: 17px;
+
+      border: 1px solid var(--border-soft);
+
+      outline: none;
+
+      background: rgba(255,255,255,.48);
+
+      color: var(--text);
+
+      font-size: 15px;
+
+      direction: ltr;
+      text-align: left;
+
+      box-shadow:
+        inset 0 1px 3px rgba(40,60,48,.04),
+        0 7px 20px rgba(40,60,48,.035);
+
+      transition:
+        .2s ease;
+
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+    }
+
+    html[data-theme="dark"] input {
+      background: rgba(255,255,255,.055);
+      box-shadow:
+        inset 0 1px 3px rgba(0,0,0,.10),
+        0 7px 20px rgba(0,0,0,.10);
+    }
+
+    input::placeholder {
+      color: var(--muted);
+    }
+
+    input:focus {
+      border-color: rgba(65, 105, 82, .42);
+
+      background: rgba(255,255,255,.70);
+
+      box-shadow:
+        0 0 0 4px rgba(75,112,89,.08),
+        inset 0 1px 3px rgba(40,60,48,.04),
+        0 10px 25px rgba(42,62,50,.06);
+    }
+
+    html[data-theme="dark"] input:focus {
+      background: rgba(255,255,255,.085);
+      border-color: rgba(130,180,150,.35);
+      box-shadow:
+        0 0 0 4px rgba(100,150,120,.10),
+        0 10px 25px rgba(0,0,0,.16);
+    }
+
+    /* ==========================================
+       Buttons
+    ========================================== */
+
+    .primary-btn,
+    .secondary-btn {
+      width: 100%;
+      min-height: 52px;
+
+      margin-top: 12px;
+      padding: 13px 17px;
+
+      border-radius: 18px;
+
+      font-size: 14px;
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        opacity .18s ease;
+    }
+
+    .primary-btn {
+      color: white;
+
+      background:
+        linear-gradient(
+          145deg,
+          #315f4a,
+          #1e4937
+        );
+
+      border: 1px solid rgba(255,255,255,.10);
+
+      box-shadow:
+        0 13px 28px rgba(31,73,55,.22),
+        inset 0 1px 0 rgba(255,255,255,.18);
+    }
+
+    .secondary-btn {
+      color: var(--green);
+
+      background:
+        rgba(255,255,255,.42);
+
+      border: 1px solid var(--border);
+
+      box-shadow:
+        0 9px 23px rgba(42,62,50,.08),
+        inset 0 1px 0 rgba(255,255,255,.62);
+    }
+
+    html[data-theme="dark"] .secondary-btn {
+      background: rgba(255,255,255,.055);
+      border-color: rgba(255,255,255,.10);
+      box-shadow:
+        0 10px 25px rgba(0,0,0,.15),
+        inset 0 1px 0 rgba(255,255,255,.05);
+    }
+
+    button:active {
+      transform: scale(.98);
+    }
+
+    button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    /* ==========================================
+       Messages
+    ========================================== */
+
+    .message {
+      display: none;
+
+      margin-top: 13px;
+      padding: 12px 14px;
+
+      border-radius: 15px;
+
+      font-size: 12px;
+      line-height: 1.9;
+    }
+
+    .success {
+      display: block;
+
+      color: var(--success);
+
+      background: rgba(221,242,226,.55);
+
+      border: 1px solid rgba(93,146,108,.15);
+    }
+
+    .error {
+      display: block;
+
+      color: var(--danger);
+
+      background: rgba(252,231,229,.55);
+
+      border: 1px solid rgba(173,83,83,.12);
+    }
+
+    .info {
+      display: block;
+
+      color: var(--info);
+
+      background: rgba(226,239,247,.55);
+    }
+
+    html[data-theme="dark"] .success {
+      background: rgba(65,130,83,.13);
+      border-color: rgba(100,170,115,.14);
+    }
+
+    html[data-theme="dark"] .error {
+      background: rgba(160,70,70,.13);
+      border-color: rgba(190,100,100,.14);
+    }
+
+    /* ==========================================
+       Dashboard
+    ========================================== */
+
+    #dashboard {
+      animation: appear .45s ease;
+    }
+
+    .profile-card {
+      padding: 22px;
+    }
+
+    .profile-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+
+      margin-bottom: 19px;
+    }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+
+      flex: 0 0 56px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 20px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(72,116,89,.20),
+          rgba(255,255,255,.40)
+        );
+
+      border: 1px solid var(--border);
+
+      box-shadow:
+        0 11px 25px rgba(42,62,50,.08),
+        inset 0 1px 0 rgba(255,255,255,.70);
+
+      font-size: 25px;
+    }
+
+    .profile-head h2 {
+      margin: 0;
+
+      color: var(--green-dark);
+
+      font-size: 18px;
+    }
+
+    .profile-head p {
+      margin: 4px 0 0;
+
+      color: var(--muted);
+
+      font-size: 12px;
+    }
+
+    .profile-grid {
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 9px;
+    }
+
+    .profile-cell {
+      padding: 13px;
+
+      border-radius: 17px;
+
+      background:
+        rgba(255,255,255,.28);
+
+      border: 1px solid rgba(255,255,255,.50);
+
+      box-shadow:
+        0 6px 17px rgba(42,62,50,.035),
+        inset 0 1px 0 rgba(255,255,255,.48);
+    }
+
+    html[data-theme="dark"] .profile-cell {
+      background: rgba(255,255,255,.045);
+      border-color: rgba(255,255,255,.075);
+    }
+
+    .profile-cell small {
+      display: block;
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+      margin-bottom: 5px;
+    }
+
+    .profile-cell strong {
+      display: block;
+
+      color: var(--green-dark);
+
+      font-size: 13px;
+
+      overflow-wrap: anywhere;
+    }
+
+    .badge {
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 5px 10px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(218,239,224,.66);
+
+      color: #2a6540;
+
+      font-size: 11px;
+      font-weight: 700;
+
+      border: 1px solid rgba(100,150,115,.10);
+    }
+
+    html[data-theme="dark"] .badge {
+      background: rgba(105,155,120,.16);
+      color: #a9d0b4;
+      border-color: rgba(130,180,145,.12);
+    }
+
+    /* ==========================================
+       Quick Actions
+    ========================================== */
+
+    .quick-grid {
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 11px;
+    }
+
+    .quick-btn {
+      min-height: 90px;
+
+      padding: 15px;
+
+      text-align: right;
+
+      border-radius: 21px;
+
+      border: 1px solid rgba(255,255,255,.70);
+
+      background:
+        rgba(255,255,255,.34);
+
+      color: var(--green-dark);
+
+      box-shadow:
+        0 10px 25px rgba(42,62,50,.065),
+        inset 0 1px 0 rgba(255,255,255,.68);
+
+      cursor: pointer;
+
+      font-family: inherit;
+
+      transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        background .18s ease;
+    }
+
+    html[data-theme="dark"] .quick-btn {
+      background: rgba(255,255,255,.045);
+      border-color: rgba(255,255,255,.09);
+
+      box-shadow:
+        0 12px 27px rgba(0,0,0,.15),
+        inset 0 1px 0 rgba(255,255,255,.05);
+    }
+
+    .quick-btn:active {
+      transform: scale(.975);
+    }
+
+    .quick-btn .icon {
+      display: block;
+
+      margin-bottom: 8px;
+
+      font-size: 22px;
+    }
+
+    .quick-btn strong {
+      display: block;
+
+      font-size: 13px;
+    }
+
+    .quick-btn small {
+      display: block;
+
+      margin-top: 3px;
+
+      color: var(--muted);
+
+      font-size: 10px;
+    }
+
+    /* ==========================================
+       Accordion
+    ========================================== */
+
+    .accordion {
+      overflow: hidden;
+
+      border-radius: 21px;
+
+      background:
+        rgba(255,255,255,.24);
+
+      border: 1px solid rgba(255,255,255,.50);
+
+      box-shadow:
+        0 7px 20px rgba(42,62,50,.035);
+    }
+
+    html[data-theme="dark"] .accordion {
+      background: rgba(255,255,255,.04);
+      border-color: rgba(255,255,255,.08);
+    }
+
+    .accordion-head {
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 12px;
+
+      padding: 15px;
+
+      border: 0;
+
+      background: transparent;
+
+      color: var(--green-dark);
+
+      font-family: inherit;
+
+      font-size: 13px;
+      font-weight: 700;
+
+      cursor: pointer;
+
+      text-align: right;
+    }
+
+    .accordion-arrow {
+      transition: transform .22s ease;
+
+      color: var(--green-soft);
+    }
+
+    .accordion.open .accordion-arrow {
+      transform: rotate(180deg);
+    }
+
+    .accordion-body {
+      display: none;
+
+      padding: 0 15px 15px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+      line-height: 2;
+    }
+
+    .accordion.open .accordion-body {
+      display: block;
+
+      animation: fadeDown .25s ease;
+    }
+
+    /* ==========================================
+       Items
+    ========================================== */
+
+    .item {
+      padding: 15px;
+
+      margin-bottom: 10px;
+
+      border-radius: 20px;
+
+      background:
+        rgba(255,255,255,.31);
+
+      border: 1px solid rgba(255,255,255,.58);
+
+      box-shadow:
+        0 8px 23px rgba(42,62,50,.045),
+        inset 0 1px 0 rgba(255,255,255,.48);
+
+      font-size: 12px;
+      line-height: 2;
+    }
+
+    html[data-theme="dark"] .item {
+      background: rgba(255,255,255,.045);
+      border-color: rgba(255,255,255,.08);
+
+      box-shadow:
+        0 10px 24px rgba(0,0,0,.13),
+        inset 0 1px 0 rgba(255,255,255,.04);
+    }
+
+    .item:last-child {
+      margin-bottom: 0;
+    }
+
+    .item strong {
+      color: var(--green-dark);
+    }
+
+    .item .item-status {
+      margin-top: 8px;
+    }
+
+    .muted {
+      margin: 0;
+
+      color: var(--muted);
+
+      font-size: 12px;
+      line-height: 1.9;
+    }
+
+    /* ==========================================
+       Token
+    ========================================== */
+
+    .token-box {
+      margin-top: 12px;
+
+      padding: 14px;
+
+      border-radius: 18px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.40),
+          rgba(255,255,255,.20)
+        );
+
+      border: 1px solid rgba(255,255,255,.55);
+
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.55),
+        0 7px 19px rgba(42,62,50,.035);
+    }
+
+    html[data-theme="dark"] .token-box {
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.07),
+          rgba(255,255,255,.035)
+        );
+
+      border-color: rgba(255,255,255,.08);
+    }
+
+    .token-code {
+      direction: ltr;
+
+      text-align: center;
+
+      font-family: monospace;
+
+      font-size: 14px;
+      font-weight: 700;
+
+      color: var(--green-dark);
+
+      letter-spacing: 1px;
+    }
+
+    /* ==========================================
+       Footer
+    ========================================== */
+
+    .footer {
+      text-align: center;
+
+      padding: 18px 10px 5px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+      line-height: 1.9;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .loading {
+      text-align: center;
+
+      padding: 13px;
+
+      color: var(--green-soft);
+
+      font-size: 12px;
+    }
+
+    /* ==========================================
+       Animation
+    ========================================== */
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(9px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeDown {
+      from {
+        opacity: 0;
+        transform: translateY(-5px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 420px) {
+
+      .app {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .luxury-header {
+        border-radius: 26px;
+        padding: 21px 18px;
+      }
+
+      .luxury-header h1 {
+        font-size: 23px;
+      }
+
+      .card {
+        padding: 17px;
+        border-radius: 24px;
+      }
+
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quick-grid {
+        gap: 9px;
+      }
+
+      .quick-btn {
+        min-height: 84px;
+        padding: 13px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="botanical" aria-hidden="true">
+    <div class="branch branch-left"></div>
+    <div class="branch branch-right"></div>
+    <div class="branch branch-bottom"></div>
+  </div>
+
+
+  <main class="app">
+
+    <!-- ==========================================
+         Luxury Header
+    ========================================== -->
+
+    <header class="luxury-header">
+
+      <div class="header-decoration"></div>
+
+      <div class="header-kicker">
+        فضای اختصاصی کائنات‌چی
+      </div>
+
+      <h1>
+        ⭐ پنل VIP کائنات‌چی
+      </h1>
+
+      <p>
+        فضای اختصاصی شما برای مشاهده اطلاعات، نوبت‌ها،
+        پرداخت‌ها و مزایای همراهی
+      </p>
+
+      <div class="header-badge">
+        🌿 همراه کائنات‌چی
+      </div>
+
+    </header>
+
+
+    <!-- ==========================================
+         Login
+    ========================================== -->
+
+    <section id="loginView">
+
+      <div class="card glass welcome">
+
+        <div class="welcome-icon">
+          ✨
+        </div>
+
+        <h2>
+          ورود به فضای من
+        </h2>
+
+        <p>
+          کد همراهی خود را وارد کنید تا به اطلاعات اختصاصی حساب خود دسترسی پیدا کنید.
+        </p>
+
+      </div>
+
+
+      <div class="card glass">
+
+        <label for="customerId">
+          کد همراهی
+        </label>
+
+        <input
+          id="customerId"
+          type="text"
+          placeholder="مثلاً VIP002"
+          autocomplete="off"
+          autocapitalize="characters"
+          spellcheck="false"
+        >
+
+        <button
+          id="loginBtn"
+          class="primary-btn"
+          onclick="loadCustomer()"
+        >
+          ورود به فضای من
+        </button>
+
+        <div
+          id="loginMessage"
+          class="message"
+        ></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         Dashboard
+    ========================================== -->
+
+    <section id="dashboard" class="hidden">
+
+
+      <!-- Profile -->
+
+      <div class="card glass profile-card">
+
+        <div class="profile-head">
+
+          <div class="avatar">
+            ✨
+          </div>
+
+          <div>
+
+            <h2 id="welcomeName">
+              همراه کائنات‌چی
+            </h2>
+
+            <p>
+              خوش آمدید 🌿
+            </p>
+
+          </div>
+
+        </div>
+
+        <div id="profile"></div>
+
+      </div>
+
+
+      <!-- Quick Actions -->
+
+      <div class="card glass">
+
+        <h2 class="section-title">
+          <span>🫧</span>
+          <span>دسترسی سریع</span>
+        </h2>
+
+        <div class="quick-grid">
+
+          <button
+            class="quick-btn"
+            onclick="scrollToSection('historyCard')"
+          >
+            <span class="icon">📅</span>
+            <strong>نوبت‌های من</strong>
+            <small>مشاهده سوابق نوبت</small>
+          </button>
+
+
+          <button
+            class="quick-btn"
+            onclick="scrollToSection('paymentsCard')"
+          >
+            <span class="icon">💳</span>
+            <strong>پرداخت‌های من</strong>
+            <small>مشاهده سوابق پرداخت</small>
+          </button>
+
+
+          <button
+            class="quick-btn"
+            onclick="scrollToSection('tokensCard')"
+          >
+            <span class="icon">🎁</span>
+            <strong>مزایای همراهی</strong>
+            <small>مدیریت توکن‌ها</small>
+          </button>
+
+
+          <button
+            class="quick-btn"
+            onclick="goToBooking()"
+          >
+            <span class="icon">📅</span>
+            <strong>دریافت نوبت</strong>
+            <small>انتخاب زمان نوبت</small>
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- Token Activation -->
+
+      <div class="card glass">
+
+        <h2 class="section-title">
+          <span>🎁</span>
+          <span>فعال‌سازی مزیت همراهی</span>
+        </h2>
+
+        <p class="muted">
+          اگر کد مزیت جدیدی از کائنات‌چی دریافت کرده‌اید،
+          آن را در این بخش وارد کنید.
+        </p>
+
+        <div style="height:12px"></div>
+
+        <label for="tokenCode">
+          کد دریافتی
+        </label>
+
+        <input
+          id="tokenCode"
+          type="text"
+          placeholder="مثلاً VIP-ABC123"
+          autocomplete="off"
+          autocapitalize="characters"
+          spellcheck="false"
+        >
+
+        <button
+          id="activateBtn"
+          class="primary-btn"
+          onclick="activateToken()"
+        >
+          فعال‌سازی
+        </button>
+
+        <div
+          id="tokenMessage"
+          class="message"
+        ></div>
+
+      </div>
+
+
+      <!-- Tokens -->
+
+      <div
+        id="tokensCard"
+        class="card glass"
+      >
+
+        <h2 class="section-title">
+          <span>🎟️</span>
+          <span>مزایای همراهی من</span>
+        </h2>
+
+        <div id="tokens"></div>
+
+      </div>
+
+
+      <!-- History -->
+
+      <div
+        id="historyCard"
+        class="card glass"
+      >
+
+        <h2 class="section-title">
+          <span>📅</span>
+          <span>نوبت‌های من</span>
+        </h2>
+
+        <div id="history"></div>
+
+      </div>
+
+
+      <!-- Payments -->
+
+      <div
+        id="paymentsCard"
+        class="card glass"
+      >
+
+        <h2 class="section-title">
+          <span>💳</span>
+          <span>پرداخت‌های من</span>
+        </h2>
+
+        <div id="payments"></div>
+
+      </div>
+
+
+      <!-- Information -->
+
+      <div class="card glass">
+
+        <div class="accordion">
+
+          <button
+            class="accordion-head"
+            onclick="toggleAccordion(this)"
+          >
+            <span>ℹ️ درباره فضای همراهان</span>
+
+            <span class="accordion-arrow">
+              ⌄
+            </span>
+
+          </button>
+
+          <div class="accordion-body">
+            این بخش فضای اختصاصی شما برای مشاهده اطلاعات حساب،
+            نوبت‌ها، پرداخت‌ها و مزایای فعال همراهی با کائنات‌چی است.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Logout -->
+
+      <button
+        class="secondary-btn"
+        onclick="logout()"
+      >
+        خروج از حساب
+      </button>
+
+    </section>
+
+
+    <footer class="footer">
+      کائنات‌چی 🌿<br>
+      همراه شما در مسیر آرامش، شناخت و رشد درونی
+    </footer>
+
+  </main>
+
+
+  <script>
+
+    /* ==========================================
+       Automatic Day / Night Theme
+    ========================================== */
+
+    function detectTheme() {
+
+      try {
+
+        if (
+          window.matchMedia &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches
+        ) {
+          return 'dark';
+        }
+
+      } catch (error) {
+        console.warn('Theme detection error:', error);
+      }
+
+      return 'light';
+    }
+
+
+    function applyTheme(theme) {
+
+      const finalTheme =
+        theme === 'dark'
+          ? 'dark'
+          : 'light';
+
+      document.documentElement.setAttribute(
+        'data-theme',
+        finalTheme
+      );
+
+    }
+
+
+    function initializeTheme() {
+
+      applyTheme(
+        detectTheme()
+      );
+
+
+      try {
+
+        const media =
+          window.matchMedia(
+            '(prefers-color-scheme: dark)'
+          );
+
+        if (media && media.addEventListener) {
+
+          media.addEventListener(
+            'change',
+            function(event) {
+
+              applyTheme(
+                event.matches
+                  ? 'dark'
+                  : 'light'
+              );
+
+            }
+          );
+
+        }
+
+      } catch (error) {
+
+        console.warn(
+          'Theme listener unavailable:',
+          error
+        );
+
+      }
+
+
+      /*
+       * اگر Telegram Mini App در آینده این صفحه را
+       * میزبانی کند، از theme آن هم استفاده می‌کنیم.
+       */
+
+      try {
+
+        if (
+          window.Telegram &&
+          window.Telegram.WebApp
+        ) {
+
+          const tg =
+            window.Telegram.WebApp;
+
+
+          if (tg.colorScheme) {
+
+            applyTheme(
+              tg.colorScheme
+            );
+
+          }
+
+
+          if (
+            tg.onEvent &&
+            typeof tg.onEvent === 'function'
+          ) {
+
+            tg.onEvent(
+              'themeChanged',
+              function() {
+
+                if (tg.colorScheme) {
+
+                  applyTheme(
+                    tg.colorScheme
+                  );
+
+                }
+
+              }
+            );
+
+          }
+
+        }
+
+      } catch (error) {
+
+        console.warn(
+          'Telegram theme unavailable:',
+          error
+        );
+
+      }
+
+    }
+
+
+    initializeTheme();
+
+
+    /* ==========================================
+       وضعیت فعلی مشتری
+    ========================================== */
+
+    let currentCustomerId = '';
+
+
+    /* ==========================================
+       پیام‌ها
+    ========================================== */
+
+    function showMessage(
+      elementId,
+      text,
+      type
+    ) {
+
+      const el =
+        document.getElementById(
+          elementId
+        );
+
+      if (!el) return;
+
+      el.textContent =
+        text || '';
+
+      el.className =
+        'message ' +
+        (type || '');
+
+    }
+
+
+    /* ==========================================
+       جلوگیری از HTML injection
+    ========================================== */
+
+    function escapeHTML(value) {
+
+      return String(value ?? '')
+        .replace(
+          /[&<>"']/g,
+          function(char) {
+
+            return {
+              '&': '&amp;',
+              '<': '&lt;',
+              '>': '&gt;',
+              '"': '&quot;',
+              "'": '&#039;'
+            }[char];
+
+          }
+        );
+
+    }
+
+
+    /* ==========================================
+       ورود مشتری
+    ========================================== */
+
+    function loadCustomer() {
+
+      const input =
+        document.getElementById(
+          'customerId'
+        );
+
+      if (!input) {
+        return;
+      }
+
+      const id =
+        String(
+          input.value || ''
+        )
+        .trim()
+        .toUpperCase();
+
+      const message =
+        document.getElementById(
+          'loginMessage'
+        );
+
+      const button =
+        document.getElementById(
+          'loginBtn'
+        );
+
+
+      if (!id) {
+
+        showMessage(
+          'loginMessage',
+          'لطفاً کد همراهی خود را وارد کنید.',
+          'error'
+        );
+
+        return;
+      }
+
+
+      if (button) {
+
+        button.disabled = true;
+        button.textContent =
+          'در حال بررسی...';
+
+      }
+
+
+      if (message) {
+
+        message.className =
+          'message';
+
+        message.textContent =
+          '';
+
+      }
+
+
+      google.script.run
+
+        .withSuccessHandler(
+          function(response) {
+
+            if (button) {
+
+              button.disabled = false;
+
+              button.textContent =
+                'ورود به فضای من';
+
+            }
+
+
+            console.log(
+              'VIP response:',
+              response
+            );
+
+
+            let result =
+              response;
+
+
+            if (
+              typeof result ===
+              'string'
+            ) {
+
+              try {
+
+                result =
+                  JSON.parse(
+                    result
+                  );
+
+              } catch (e) {
+
+                showMessage(
+                  'loginMessage',
+                  'پاسخ سرور قابل پردازش نیست.',
+                  'error'
+                );
+
+                console.error(
+                  'VIP JSON parse error:',
+                  e
+                );
+
+                return;
+              }
+
+            }
+
+
+            if (
+              result &&
+              result.success === true &&
+              result.customer
+            ) {
+
+              currentCustomerId =
+                String(
+                  result.customer.id ||
+                  id
+                )
+                .trim()
+                .toUpperCase();
+
+
+              showMessage(
+                'loginMessage',
+                'ورود با موفقیت انجام شد.',
+                'success'
+              );
+
+
+              document
+                .getElementById(
+                  'loginView'
+                )
+                .classList
+                .add('hidden');
+
+
+              renderDashboard(
+                result
+              );
+
+
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+              });
+
+
+              return;
+
+            }
+
+
+            const errorMessage =
+              result &&
+              result.message
+                ? result.message
+                : 'ورود انجام نشد.';
+
+
+            showMessage(
+              'loginMessage',
+              errorMessage,
+              'error'
+            );
+
+          }
+        )
+
+        .withFailureHandler(
+          function(error) {
+
+            if (button) {
+
+              button.disabled = false;
+
+              button.textContent =
+                'ورود به فضای من';
+
+            }
+
+
+            const errorMessage =
+              error &&
+              error.message
+                ? error.message
+                : 'خطا در ارتباط با سرور.';
+
+
+            showMessage(
+              'loginMessage',
+              errorMessage,
+              'error'
+            );
+
+
+            console.error(
+              'VIP server error:',
+              error
+            );
+
+          }
+        )
+
+        .getVIPData(id);
+
+    }
+
+
+    /* ==========================================
+       نمایش داشبورد
+    ========================================== */
+
+    function renderDashboard(data) {
+
+      document
+        .getElementById(
+          'dashboard'
+        )
+        .classList
+        .remove('hidden');
+
+
+      const c =
+        data.customer || {};
+
+
+      const welcomeName =
+        c.firstName ||
+        c.name ||
+        'همراه کائنات‌چی';
+
+
+      document.getElementById(
+        'welcomeName'
+      ).textContent =
+        'سلام ' +
+        welcomeName +
+        ' 🌿';
+
+
+      document.getElementById(
+        'profile'
+      ).innerHTML = `
+
+        <div class="profile-grid">
+
+          <div class="profile-cell">
+            <small>نام و نام خانوادگی</small>
+
+            <strong>
+              ${escapeHTML(
+                c.fullName || '—'
+              )}
+            </strong>
+          </div>
+
+
+          <div class="profile-cell">
+            <small>کد همراهی</small>
+
+            <strong dir="ltr">
+              ${escapeHTML(
+                c.id || '—'
+              )}
+            </strong>
+          </div>
+
+
+          <div class="profile-cell">
+            <small>شماره موبایل</small>
+
+            <strong dir="ltr">
+              ${escapeHTML(
+                c.mobile || '—'
+              )}
+            </strong>
+          </div>
+
+
+          <div class="profile-cell">
+            <small>تاریخ عضویت</small>
+
+            <strong>
+              ${escapeHTML(
+                c.joinedAt || '—'
+              )}
+            </strong>
+          </div>
+
+
+          <div class="profile-cell">
+            <small>تعداد نوبت‌ها</small>
+
+            <strong>
+              ${escapeHTML(
+                c.bookingsCount || 0
+              )}
+            </strong>
+          </div>
+
+
+          <div class="profile-cell">
+            <small>وضعیت همراهی</small>
+
+            <strong>
+              <span class="badge">
+                ${escapeHTML(
+                  c.vipStatus || '—'
+                )}
+              </span>
+            </strong>
+          </div>
+
+        </div>
+      `;
+
+
+      renderTokens(
+        data.tokens || []
+      );
+
+
+      renderHistory(
+        data.history || []
+      );
+
+
+      renderPayments(
+        data.payments || []
+      );
+
+    }
+
+
+    /* ==========================================
+       توکن‌ها
+       درصد تخفیف عمداً نمایش داده نمی‌شود.
+    ========================================== */
+
+    function renderTokens(tokens) {
+
+      const container =
+        document.getElementById(
+          'tokens'
+        );
+
+
+      if (!tokens.length) {
+
+        container.innerHTML =
+          '<p class="muted">هنوز مزیت یا توکنی برای حساب شما ثبت نشده است.</p>';
+
+        return;
+      }
+
+
+      container.innerHTML =
+        tokens
+          .map(
+            function(t) {
+
+              const status =
+                String(
+                  t[5] || ''
+                ).trim();
+
+
+              const statusText =
+                status || '—';
+
+
+              return `
+
+                <div class="item">
+
+                  <strong>
+                    کد مزیت:
+                  </strong>
+
+
+                  <div class="token-box">
+
+                    <div class="token-code">
+                      ${escapeHTML(
+                        t[0] || '—'
+                      )}
+                    </div>
+
+                  </div>
+
+
+                  <div style="height:8px"></div>
+
+
+                  <strong>
+                    تاریخ صدور:
+                  </strong>
+
+                  ${escapeHTML(
+                    t[3] || '—'
+                  )}
+
+
+                  <br>
+
+
+                  <strong>
+                    اعتبار تا:
+                  </strong>
+
+                  ${escapeHTML(
+                    t[4] || '—'
+                  )}
+
+
+                  <div class="item-status">
+
+                    <span class="badge">
+                      ${escapeHTML(
+                        statusText
+                      )}
+                    </span>
+
+                  </div>
+
+                </div>
+
+              `;
+
+            }
+          )
+          .join('');
+
+    }
+
+
+    /* ==========================================
+       سوابق نوبت
+    ========================================== */
+
+    function renderHistory(history) {
+
+      const container =
+        document.getElementById(
+          'history'
+        );
+
+
+      if (!history.length) {
+
+        container.innerHTML =
+          '<p class="muted">هنوز سابقه نوبتی برای این حساب ثبت نشده است.</p>';
+
+        return;
+      }
+
+
+      container.innerHTML =
+        history
+          .map(
+            function(row) {
+
+              return `
+
+                <div class="item">
+
+                  <strong>
+                    تاریخ:
+                  </strong>
+
+                  ${escapeHTML(
+                    row[1] || '—'
+                  )}
+
+                  <br>
+
+                  <strong>
+                    خدمت:
+                  </strong>
+
+                  ${escapeHTML(
+                    row[2] || '—'
+                  )}
+
+                  <br>
+
+                  <strong>
+                    وضعیت:
+                  </strong>
+
+                  ${escapeHTML(
+                    row[3] || '—'
+                  )}
+
+                </div>
+
+              `;
+
+            }
+          )
+          .join('');
+
+    }
+
+
+    /* ==========================================
+       پرداخت‌ها
+    ========================================== */
+
+    function renderPayments(payments) {
+
+      const container =
+        document.getElementById(
+          'payments'
+        );
+
+
+      if (!payments.length) {
+
+        container.innerHTML =
+          '<p class="muted">هنوز پرداختی برای این حساب ثبت نشده است.</p>';
+
+        return;
+      }
+
+
+      container.innerHTML =
+        payments
+          .map(
+            function(row) {
+
+              return `
+
+                <div class="item">
+
+                  <strong>
+                    تاریخ:
+                  </strong>
+
+                  ${escapeHTML(
+                    row[1] || '—'
+                  )}
+
+                  <br>
+
+                  <strong>
+                    مبلغ:
+                  </strong>
+
+                  ${escapeHTML(
+                    row[2] || '—'
+                  )}
+
+                  <br>
+
+                  <strong>
+                    وضعیت:
+                  </strong>
+
+                  ${escapeHTML(
+                    row[3] || '—'
+                  )}
+
+                </div>
+
+              `;
+
+            }
+          )
+          .join('');
+
+    }
+
+
+    /* ==========================================
+       فعال‌سازی توکن
+    ========================================== */
+
+    function activateToken() {
+
+      if (!currentCustomerId) {
+
+        showMessage(
+          'tokenMessage',
+          'ابتدا وارد حساب کاربری شوید.',
+          'error'
+        );
+
+        return;
+      }
+
+
+      const input =
+        document.getElementById(
+          'tokenCode'
+        );
+
+
+      const code =
+        input.value
+          .trim()
+          .toUpperCase();
+
+
+      if (!code) {
+
+        showMessage(
+          'tokenMessage',
+          'لطفاً کد دریافتی را وارد کنید.',
+          'error'
+        );
+
+        return;
+      }
+
+
+      const button =
+        document.getElementById(
+          'activateBtn'
+        );
+
+
+      button.disabled = true;
+
+      button.textContent =
+        'در حال بررسی...';
+
+
+      google.script.run
+
+        .withSuccessHandler(
+          function(response) {
+
+            button.disabled = false;
+
+            button.textContent =
+              'فعال‌سازی';
+
+
+            let result;
+
+
+            try {
+
+              result =
+                typeof response ===
+                'string'
+                  ? JSON.parse(
+                      response
+                    )
+                  : response;
+
+            } catch (e) {
+
+              showMessage(
+                'tokenMessage',
+                'پاسخ سرور قابل پردازش نیست.',
+                'error'
+              );
+
+              return;
+
+            }
+
+
+            showMessage(
+              'tokenMessage',
+              result &&
+              result.message
+                ? result.message
+                : 'درخواست انجام شد.',
+              result &&
+              result.success
+                ? 'success'
+                : 'error'
+            );
+
+
+            if (
+              result &&
+              result.success
+            ) {
+
+              input.value = '';
+
+              loadCustomer();
+
+            }
+
+          }
+        )
+
+        .withFailureHandler(
+          function(error) {
+
+            button.disabled = false;
+
+            button.textContent =
+              'فعال‌سازی';
+
+
+            showMessage(
+              'tokenMessage',
+              error &&
+              error.message
+                ? error.message
+                : 'خطا در ارتباط با سرور.',
+              'error'
+            );
+
+          }
+        )
+
+        .activateToken(
+          currentCustomerId,
+          code
+        );
+
+    }
+
+
+    /* ==========================================
+       لینک دریافت نوبت
+    ========================================== */
+
+    function goToBooking() {
+
+      google.script.run
+
+        .withSuccessHandler(
+          function(response) {
+
+            if (
+              !response ||
+              !response.success ||
+              !response.bookingUrl
+            ) {
+
+              alert(
+                'لینک دریافت نوبت تنظیم نشده است.'
+              );
+
+              return;
+
+            }
+
+
+            const link =
+              document.createElement(
+                'a'
+              );
+
+
+            link.href =
+              response.bookingUrl;
+
+
+            link.target =
+              '_blank';
+
+
+            link.rel =
+              'noopener noreferrer';
+
+
+            document.body.appendChild(
+              link
+            );
+
+
+            link.click();
+
+
+            document.body.removeChild(
+              link
+            );
+
+          }
+        )
+
+        .withFailureHandler(
+          function(error) {
+
+            alert(
+              'دریافت لینک نوبت با خطا مواجه شد.'
+            );
+
+
+            console.error(
+              'Booking URL error:',
+              error
+            );
+
+          }
+        )
+
+        .getVIPSettings();
+
+    }
+
+
+    /* ==========================================
+       اسکرول
+    ========================================== */
+
+    function scrollToSection(id) {
+
+      const element =
+        document.getElementById(
+          id
+        );
+
+
+      if (!element) return;
+
+
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+
+    }
+
+
+    /* ==========================================
+       Accordion
+    ========================================== */
+
+    function toggleAccordion(button) {
+
+      const accordion =
+        button.closest(
+          '.accordion'
+        );
+
+
+      if (!accordion) return;
+
+
+      accordion.classList.toggle(
+        'open'
+      );
+
+    }
+
+
+    /* ==========================================
+       خروج
+    ========================================== */
+
+    function logout() {
+
+      currentCustomerId = '';
+
+
+      document.getElementById(
+        'customerId'
+      ).value = '';
+
+
+      document.getElementById(
+        'tokenCode'
+      ).value = '';
+
+
+      document
+        .getElementById(
+          'dashboard'
+        )
+        .classList
+        .add('hidden');
+
+
+      document
+        .getElementById(
+          'loginView'
+        )
+        .classList
+        .remove('hidden');
+
+
+      document.getElementById(
+        'loginMessage'
+      ).className =
+        'message';
+
+
+      document.getElementById(
+        'tokenMessage'
+      ).className =
+        'message';
+
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+
+    }
+
+
+    /* ==========================================
+       Enter برای ورود
+    ========================================== */
+
+    const customerInput =
+      document.getElementById(
+        'customerId'
+      );
+
+
+    if (customerInput) {
+
+      customerInput.addEventListener(
+        'keydown',
+        function(event) {
+
+          if (
+            event.key ===
+            'Enter'
+          ) {
+
+            loadCustomer();
+
+          }
+
+        }
+      );
+
+    }
+
+
+    /* ==========================================
+       Enter برای توکن
+    ========================================== */
+
+    const tokenInput =
+      document.getElementById(
+        'tokenCode'
+      );
+
+
+    if (tokenInput) {
+
+      tokenInput.addEventListener(
+        'keydown',
+        function(event) {
+
+          if (
+            event.key ===
+            'Enter'
+          ) {
+
+            activateToken();
+
+          }
+
+        }
+      );
+
+    }
+
+  </script>
+
+</body>
+</html>
