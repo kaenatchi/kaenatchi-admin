@@ -1,0 +1,3136 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>پنل مدیریت VIP کائنات‌چی</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "Segoe UI",
+        Tahoma,
+        Arial,
+        sans-serif;
+      background: #f4f0e7;
+      color: #353b32;
+    }
+
+    body {
+      padding: 18px 14px 40px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .logo {
+      width: 78px;
+      height: 78px;
+      object-fit: contain;
+      margin: 0 auto 8px;
+      display: block;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 800;
+      color: #353b32;
+    }
+
+    .subtitle {
+      margin: 7px 0 0;
+      font-size: 13px;
+      color: #77786f;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 22px;
+      padding: 17px;
+      margin-bottom: 14px;
+      box-shadow:
+        0 7px 24px rgba(53, 59, 50, 0.09),
+        0 2px 6px rgba(53, 59, 50, 0.04);
+      border: 1px solid rgba(53, 59, 50, 0.06);
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 800;
+      margin-bottom: 14px;
+      color: #353b32;
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 7px;
+      color: #565a51;
+    }
+
+    input,
+    select {
+      width: 100%;
+      border: 1px solid #dedbd2;
+      background: #faf9f5;
+      border-radius: 14px;
+      min-height: 47px;
+      padding: 11px 13px;
+      font-size: 14px;
+      color: #353b32;
+      outline: none;
+      direction: rtl;
+      box-shadow: 0 3px 9px rgba(53, 59, 50, 0.05);
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #8d9b82;
+      box-shadow:
+        0 0 0 3px rgba(141, 155, 130, 0.13),
+        0 4px 12px rgba(53, 59, 50, 0.07);
+    }
+
+    button {
+      width: 100%;
+      border: 0;
+      border-radius: 15px;
+      min-height: 47px;
+      padding: 11px 14px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      transition:
+        transform 0.12s ease,
+        opacity 0.12s ease,
+        box-shadow 0.12s ease;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    .primary {
+      background: linear-gradient(
+        135deg,
+        #174b38,
+        #2c7658
+      );
+      color: white;
+      box-shadow:
+        0 7px 16px rgba(23, 75, 56, 0.2);
+    }
+
+    .secondary {
+      background: #e9eee8;
+      color: #31513f;
+      box-shadow:
+        0 5px 12px rgba(53, 59, 50, 0.08);
+    }
+
+    .gold {
+      background: linear-gradient(
+        135deg,
+        #8e7647,
+        #b29a67
+      );
+      color: white;
+      box-shadow:
+        0 7px 16px rgba(142, 118, 71, 0.18);
+    }
+
+    .danger {
+      background: #f4e5e2;
+      color: #9a4439;
+      box-shadow:
+        0 5px 12px rgba(120, 60, 50, 0.08);
+    }
+
+    .small-button {
+      width: auto;
+      min-height: 39px;
+      padding: 8px 13px;
+      font-size: 12px;
+      border-radius: 12px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .message {
+      display: none;
+      padding: 12px 13px;
+      border-radius: 14px;
+      font-size: 13px;
+      line-height: 1.8;
+      margin-bottom: 13px;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      background: #e7f2e9;
+      color: #285b3b;
+    }
+
+    .message.error {
+      background: #f8e7e5;
+      color: #873b34;
+    }
+
+    .message.info {
+      background: #e9eee8;
+      color: #465b4d;
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .empty {
+      text-align: center;
+      color: #888980;
+      font-size: 13px;
+      padding: 17px 8px;
+      background: #faf9f5;
+      border-radius: 15px;
+    }
+
+    .customer-card,
+    .code-card,
+    .token-card {
+      background: #faf9f5;
+      border: 1px solid #e5e1d8;
+      border-radius: 17px;
+      padding: 13px;
+      box-shadow:
+        0 4px 11px rgba(53, 59, 50, 0.055);
+    }
+
+    /* =======================================================
+       CURRENT CONNECTION CODE
+    ======================================================= */
+
+    .current-connection-card {
+      display: none;
+      margin-top: 13px;
+      padding: 15px;
+      border-radius: 18px;
+      background:
+        linear-gradient(
+          145deg,
+          #edf4ef,
+          #f8f5ed
+        );
+      border: 1px solid rgba(44, 118, 88, 0.18);
+      box-shadow:
+        0 8px 20px rgba(23, 75, 56, 0.09);
+    }
+
+    .current-connection-card.show {
+      display: block;
+    }
+
+    .current-connection-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: #557060;
+      margin-bottom: 6px;
+    }
+
+    .current-connection-customer {
+      font-size: 14px;
+      font-weight: 800;
+      color: #353b32;
+      line-height: 1.8;
+    }
+
+    .current-connection-id {
+      font-size: 11px;
+      color: #77786f;
+      margin-top: 2px;
+    }
+
+    .current-connection-code {
+      direction: ltr;
+      text-align: center;
+      font-family: monospace;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: #174b38;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(44, 118, 88, 0.14);
+      border-radius: 13px;
+      padding: 13px 10px;
+      margin-top: 12px;
+      overflow-wrap: anywhere;
+      box-shadow:
+        inset 0 1px 2px rgba(53, 59, 50, 0.03);
+    }
+
+    .current-connection-copy {
+      margin-top: 10px;
+    }
+
+    .current-connection-status {
+      text-align: center;
+      font-size: 11px;
+      color: #6f786f;
+      margin-top: 8px;
+      line-height: 1.7;
+    }
+
+    .item-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .item-name {
+      font-weight: 800;
+      font-size: 15px;
+      color: #353b32;
+      line-height: 1.7;
+    }
+
+    .item-meta {
+      font-size: 12px;
+      color: #77786f;
+      line-height: 1.9;
+      margin-top: 7px;
+      word-break: break-word;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .badge.active {
+      background: #e4f1e7;
+      color: #2d6843;
+    }
+
+    .badge.inactive {
+      background: #eeeae4;
+      color: #7a746c;
+    }
+
+    .badge.used {
+      background: #eeeae5;
+      color: #777066;
+    }
+
+    .badge.revoked {
+      background: #f4e2df;
+      color: #93463d;
+    }
+
+    .badge.expired {
+      background: #f0e5df;
+      color: #865849;
+    }
+
+    .code-value {
+      direction: ltr;
+      text-align: left;
+      font-family: monospace;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      background: #f0eee7;
+      border-radius: 11px;
+      padding: 9px 10px;
+      margin-top: 9px;
+      overflow-wrap: anywhere;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 13px;
+    }
+
+    .section-header .card-title {
+      margin: 0;
+    }
+
+    .section-header button {
+      flex: 0 0 auto;
+    }
+
+    .hint {
+      font-size: 11px;
+      line-height: 1.8;
+      color: #898a82;
+      margin-top: 6px;
+    }
+
+    .divider {
+      height: 1px;
+      background: #ebe7df;
+      margin: 15px 0;
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 54px;
+      color: #7c7e76;
+      font-size: 13px;
+    }
+
+    .spinner {
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      border: 2px solid #d7ddd6;
+      border-top-color: #2c7658;
+      animation: spin 0.75s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .status-line {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      color: #888980;
+      margin-top: 8px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #74a47f;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 13px 10px 32px;
+      }
+
+      .card {
+        padding: 14px;
+        border-radius: 19px;
+      }
+
+      .row {
+        grid-template-columns: 1fr;
+      }
+
+      .title {
+        font-size: 22px;
+      }
+
+      .current-connection-code {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<div class="container">
+
+  <header class="header">
+    <div style="
+      width:78px;
+      height:78px;
+      margin:0 auto 8px;
+      border-radius:22px;
+      background:linear-gradient(145deg,#edf0e9,#f8f5ed);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 7px 18px rgba(53,59,50,.08);
+      color:#174b38;
+      font-size:30px;
+    ">✦</div>
+
+    <h1 class="title">
+      پنل مدیریت VIP کائنات‌چی
+    </h1>
+
+    <p class="subtitle">
+      مدیریت اعضا، توکن‌های تخفیف و کدهای اتصال VIP
+    </p>
+
+    <div
+      class="status-line"
+      style="justify-content:center;"
+    >
+      <span class="status-dot"></span>
+      <span id="connectionStatus">
+        در حال اتصال به پنل...
+      </span>
+    </div>
+  </header>
+
+  <div
+    id="globalMessage"
+    class="message"
+  ></div>
+
+  <!-- SETTINGS -->
+  <section class="card">
+    <div class="card-title">
+      ⚙️ تنظیمات
+    </div>
+
+    <div class="field">
+      <label for="bookingUrl">
+        لینک سامانه نوبت‌دهی
+      </label>
+
+      <input
+        id="bookingUrl"
+        type="url"
+        placeholder="https://..."
+        autocomplete="off"
+      >
+    </div>
+
+    <button
+      class="secondary"
+      type="button"
+      onclick="saveSettings()"
+    >
+      💾 ذخیره تنظیمات
+    </button>
+  </section>
+
+  <!-- ADD CUSTOMER -->
+  <section class="card">
+    <div class="card-title">
+      ➕ افزودن مشتری VIP
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="firstName">
+          نام
+        </label>
+
+        <input
+          id="firstName"
+          type="text"
+          placeholder="نام"
+          autocomplete="off"
+        >
+      </div>
+
+      <div class="field">
+        <label for="lastName">
+          نام خانوادگی
+        </label>
+
+        <input
+          id="lastName"
+          type="text"
+          placeholder="نام خانوادگی"
+          autocomplete="off"
+        >
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="mobile">
+        شماره موبایل
+      </label>
+
+      <input
+        id="mobile"
+        type="tel"
+        placeholder="09..."
+        autocomplete="off"
+      >
+    </div>
+
+    <div class="field">
+      <label for="telegramId">
+        Telegram ID
+        <span style="font-weight:400;">
+          (اختیاری)
+        </span>
+      </label>
+
+      <input
+        id="telegramId"
+        type="text"
+        placeholder="مثلاً 123456789"
+        autocomplete="off"
+        dir="ltr"
+      >
+    </div>
+
+    <div class="field">
+      <label for="activateNow">
+        وضعیت عضویت
+      </label>
+
+      <select id="activateNow">
+        <option value="true">
+          فعال
+        </option>
+
+        <option value="false">
+          غیرفعال
+        </option>
+      </select>
+    </div>
+
+    <button
+      class="primary"
+      type="button"
+      onclick="addCustomer()"
+    >
+      👤 افزودن مشتری VIP
+    </button>
+  </section>
+
+  <!-- CREATE TOKEN -->
+  <section class="card">
+    <div class="card-title">
+      🎟️ ایجاد توکن تخفیف
+    </div>
+
+    <div class="field">
+      <label for="tokenCustomer">
+        مشتری VIP
+      </label>
+
+      <select id="tokenCustomer">
+        <option value="">
+          در حال بارگذاری مشتریان...
+        </option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="discountPercent">
+        درصد تخفیف
+      </label>
+
+      <select id="discountPercent">
+        <option value="3">
+          ۳٪
+        </option>
+
+        <option value="5">
+          ۵٪
+        </option>
+
+        <option value="7">
+          ۷٪
+        </option>
+      </select>
+    </div>
+
+    <button
+      id="createTokenButton"
+      class="gold"
+      type="button"
+      onclick="createToken()"
+    >
+      🎟️ ایجاد توکن
+    </button>
+
+    <div class="hint">
+      هر توکن از زمان صدور به مدت ۱۰ ساعت اعتبار دارد.
+    </div>
+  </section>
+
+  <!-- CONNECTION CODE -->
+  <section class="card">
+    <div class="card-title">
+      🔐 کد اتصال VIP
+    </div>
+
+    <div class="field">
+      <label for="connectionCustomer">
+        مشتری VIP
+      </label>
+
+      <select id="connectionCustomer">
+        <option value="">
+          در حال بارگذاری مشتریان...
+        </option>
+      </select>
+    </div>
+
+    <button
+      id="generateConnectionButton"
+      class="primary"
+      type="button"
+      onclick="generateConnectionCode()"
+    >
+      🔐 ایجاد کد اتصال
+    </button>
+
+    <!-- CURRENT CONNECTION CODE -->
+    <div
+      id="currentConnectionCodeCard"
+      class="current-connection-card"
+    >
+      <div class="current-connection-label">
+        🔐 کد اتصال فعال این مشتری
+      </div>
+
+      <div
+        id="currentConnectionCustomer"
+        class="current-connection-customer"
+      ></div>
+
+      <div
+        id="currentConnectionCustomerId"
+        class="current-connection-id"
+      ></div>
+
+      <div
+        id="currentConnectionCode"
+        class="current-connection-code"
+      ></div>
+
+      <button
+        id="copyCurrentConnectionButton"
+        class="secondary current-connection-copy"
+        type="button"
+        onclick="copyCurrentConnectionCode()"
+      >
+        📋 کپی کد اتصال
+      </button>
+
+      <div
+        id="currentConnectionStatus"
+        class="current-connection-status"
+      >
+        این کد برای اتصال حساب Telegram مشتری استفاده می‌شود.
+      </div>
+    </div>
+
+    <div class="hint">
+      کد اتصال برای متصل کردن حساب Telegram مشتری به عضویت VIP استفاده می‌شود.
+    </div>
+  </section>
+
+  <!-- CUSTOMERS -->
+  <section class="card">
+    <div class="section-header">
+      <div class="card-title">
+        👥 مشتریان VIP
+      </div>
+
+      <button
+        class="secondary small-button"
+        type="button"
+        onclick="refreshCustomers()"
+      >
+        🔄 بروزرسانی
+      </button>
+    </div>
+
+    <div id="customersList">
+      <div class="loading">
+        <span class="spinner"></span>
+        در حال دریافت مشتریان...
+      </div>
+    </div>
+  </section>
+
+  <!-- CONNECTION CODES -->
+  <section class="card">
+    <div class="section-header">
+      <div class="card-title">
+        🔐 کدهای اتصال
+      </div>
+
+      <button
+        class="secondary small-button"
+        type="button"
+        onclick="refreshConnectionCodes()"
+      >
+        🔄 بروزرسانی
+      </button>
+    </div>
+
+    <div id="connectionCodesList">
+      <div class="loading">
+        <span class="spinner"></span>
+        در حال دریافت کدهای اتصال...
+      </div>
+    </div>
+  </section>
+
+  <!-- TOKENS -->
+  <section class="card">
+    <div class="section-header">
+      <div class="card-title">
+        🎟️ توکن‌ها
+      </div>
+
+      <button
+        class="secondary small-button"
+        type="button"
+        onclick="refreshTokens()"
+      >
+        🔄 بروزرسانی
+      </button>
+    </div>
+
+    <div id="tokensList">
+      <div class="loading">
+        <span class="spinner"></span>
+        در حال دریافت توکن‌ها...
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  /* =======================================================
+     STATE
+  ======================================================= */
+
+  let initialDataLoaded = false;
+  let adminBootInProgress = false;
+  let tokenCreationInProgress = false;
+  let connectionCreationInProgress = false;
+
+  /*
+   * کش کدهای اتصال برای اینکه بتوانیم
+   * آخرین کد فعال هر مشتری را بدون جستجو
+   * در لیست بزرگ نمایش دهیم.
+   */
+  let connectionCodesCache = [];
+
+
+  /* =======================================================
+     BASIC HELPERS
+  ======================================================= */
+
+  function showMessage(
+    message,
+    type
+  ) {
+    const box =
+      document.getElementById(
+        'globalMessage'
+      );
+
+    if (!box) {
+      return;
+    }
+
+    box.textContent =
+      message || '';
+
+    box.className =
+      'message show ' +
+      (type || 'info');
+
+    window.clearTimeout(
+      showMessage.timer
+    );
+
+    showMessage.timer =
+      window.setTimeout(
+        function() {
+          box.className =
+            'message';
+        },
+        5000
+      );
+  }
+
+
+  function setConnectionStatus(
+    text,
+    online
+  ) {
+    const el =
+      document.getElementById(
+        'connectionStatus'
+      );
+
+    if (!el) {
+      return;
+    }
+
+    el.textContent =
+      text || '';
+
+    const dot =
+      document.querySelector(
+        '.status-dot'
+      );
+
+    if (dot) {
+      dot.style.background =
+        online
+          ? '#74a47f'
+          : '#c47a70';
+    }
+  }
+
+
+  function escapeHtml(
+    value
+  ) {
+    return String(
+      value == null
+        ? ''
+        : value
+    )
+      .replace(
+        /&/g,
+        '&amp;'
+      )
+      .replace(
+        /</g,
+        '&lt;'
+      )
+      .replace(
+        />/g,
+        '&gt;'
+      )
+      .replace(
+        /"/g,
+        '&quot;'
+      )
+      .replace(
+        /'/g,
+        '&#039;'
+      );
+  }
+
+
+  function normalizeText(
+    value
+  ) {
+    return String(
+      value == null
+        ? ''
+        : value
+    ).trim();
+  }
+
+
+  /*
+   * مهم:
+   * شناسه مشتری ممکن است از Backend
+   * با نام id یا customerId برگردد.
+   */
+  function getCustomerId(
+    customer
+  ) {
+    if (!customer) {
+      return '';
+    }
+
+    const id =
+      customer.id !== undefined &&
+      customer.id !== null
+        ? customer.id
+        : customer.customerId;
+
+    return normalizeText(
+      id
+    );
+  }
+
+
+  function normalizeCustomersResult(
+    result
+  ) {
+    if (!result) {
+      return [];
+    }
+
+    if (Array.isArray(result)) {
+      return result;
+    }
+
+    if (
+      Array.isArray(
+        result.customers
+      )
+    ) {
+      return result.customers;
+    }
+
+    if (
+      result.data &&
+      Array.isArray(
+        result.data.customers
+      )
+    ) {
+      return result.data.customers;
+    }
+
+    return [];
+  }
+
+
+  function normalizeTokensResult(
+    result
+  ) {
+    if (!result) {
+      return [];
+    }
+
+    if (Array.isArray(result)) {
+      return result;
+    }
+
+    if (
+      Array.isArray(
+        result.tokens
+      )
+    ) {
+      return result.tokens;
+    }
+
+    return [];
+  }
+
+
+  function normalizeCodesResult(
+    result
+  ) {
+    if (!result) {
+      return [];
+    }
+
+    if (Array.isArray(result)) {
+      return result;
+    }
+
+    if (
+      Array.isArray(
+        result.codes
+      )
+    ) {
+      return result.codes;
+    }
+
+    return [];
+  }
+
+
+  function getCustomerName(
+    customer
+  ) {
+    const first =
+      normalizeText(
+        customer &&
+        customer.firstName
+      );
+
+    const last =
+      normalizeText(
+        customer &&
+        customer.lastName
+      );
+
+    const full =
+      (
+        first +
+        ' ' +
+        last
+      ).trim();
+
+    return (
+      full ||
+      getCustomerId(customer) ||
+      'مشتری بدون نام'
+    );
+  }
+
+
+  function getStatusClass(
+    status
+  ) {
+    const s =
+      normalizeText(
+        status
+      );
+
+    if (
+      s === 'فعال' ||
+      s === 'صادرشده'
+    ) {
+      return 'active';
+    }
+
+    if (
+      s === 'استفاده‌شده' ||
+      s === 'مصرف‌شده'
+    ) {
+      return 'used';
+    }
+
+    if (
+      s === 'باطل‌شده' ||
+      s === 'لغوشده'
+    ) {
+      return 'revoked';
+    }
+
+    if (
+      s === 'منقضی‌شده'
+    ) {
+      return 'expired';
+    }
+
+    return 'inactive';
+  }
+
+
+  /* =======================================================
+     CURRENT CONNECTION CODE DISPLAY
+  ======================================================= */
+
+  function hideCurrentConnectionCode() {
+    const card =
+      document.getElementById(
+        'currentConnectionCodeCard'
+      );
+
+    if (card) {
+      card.classList.remove(
+        'show'
+      );
+    }
+  }
+
+
+  function showCurrentConnectionCode(
+    code,
+    customerId,
+    customerName,
+    status
+  ) {
+    const card =
+      document.getElementById(
+        'currentConnectionCodeCard'
+      );
+
+    const customerEl =
+      document.getElementById(
+        'currentConnectionCustomer'
+      );
+
+    const idEl =
+      document.getElementById(
+        'currentConnectionCustomerId'
+      );
+
+    const codeEl =
+      document.getElementById(
+        'currentConnectionCode'
+      );
+
+    const statusEl =
+      document.getElementById(
+        'currentConnectionStatus'
+      );
+
+    if (!card) {
+      return;
+    }
+
+    const cleanCode =
+      normalizeText(code);
+
+    const cleanCustomerId =
+      normalizeText(customerId);
+
+    if (!cleanCode) {
+      hideCurrentConnectionCode();
+      return;
+    }
+
+    if (customerEl) {
+      customerEl.textContent =
+        customerName ||
+        cleanCustomerId ||
+        'مشتری VIP';
+    }
+
+    if (idEl) {
+      idEl.textContent =
+        cleanCustomerId
+          ? 'شناسه مشتری: ' +
+            cleanCustomerId
+          : '';
+    }
+
+    if (codeEl) {
+      codeEl.textContent =
+        cleanCode;
+    }
+
+    if (statusEl) {
+      if (
+        status === 'صادرشده'
+      ) {
+        statusEl.textContent =
+          'این کد هنوز استفاده نشده و آماده اتصال Telegram است.';
+      } else {
+        statusEl.textContent =
+          status
+            ? 'وضعیت کد: ' + status
+            : 'کد اتصال مشتری.';
+      }
+    }
+
+    card.classList.add(
+      'show'
+    );
+  }
+
+
+  function copyCurrentConnectionCode() {
+    const codeEl =
+      document.getElementById(
+        'currentConnectionCode'
+      );
+
+    if (!codeEl) {
+      return;
+    }
+
+    const code =
+      normalizeText(
+        codeEl.textContent
+      );
+
+    if (!code) {
+      return;
+    }
+
+    copyText(
+      code
+    );
+  }
+
+
+  /*
+   * آخرین کد صادرشده یک مشتری را
+   * از کش پیدا می‌کند.
+   */
+  function findActiveConnectionCodeForCustomer(
+    customerId
+  ) {
+    const target =
+      normalizeText(
+        customerId
+      );
+
+    if (!target) {
+      return null;
+    }
+
+    const codes =
+      Array.isArray(
+        connectionCodesCache
+      )
+        ? connectionCodesCache
+        : [];
+
+    /*
+     * از انتها شروع می‌کنیم تا اگر
+     * چند کد برای یک مشتری وجود داشت،
+     * جدیدترین مورد بررسی شود.
+     */
+    for (
+      let i = codes.length - 1;
+      i >= 0;
+      i--
+    ) {
+      const item =
+        codes[i];
+
+      const itemCustomerId =
+        normalizeText(
+          item &&
+          item.customerId
+        );
+
+      const status =
+        normalizeText(
+          item &&
+          item.status
+        );
+
+      const code =
+        normalizeText(
+          item &&
+          (
+            item.code ||
+            item.connectionCode
+          )
+        );
+
+      if (
+        itemCustomerId === target &&
+        status === 'صادرشده' &&
+        code
+      ) {
+        return item;
+      }
+    }
+
+    return null;
+  }
+
+
+  /*
+   * وقتی مشتری از Dropdown انتخاب می‌شود،
+   * اگر کد فعال داشته باشد همان‌جا نمایش داده می‌شود.
+   */
+  function showSelectedCustomerConnectionCode() {
+    const select =
+      document.getElementById(
+        'connectionCustomer'
+      );
+
+    if (!select) {
+      return;
+    }
+
+    const selectedOption =
+      select.options[
+        select.selectedIndex
+      ];
+
+    const customerId =
+      normalizeText(
+        selectedOption
+          ? selectedOption.value
+          : select.value
+      );
+
+    if (!customerId) {
+      hideCurrentConnectionCode();
+      return;
+    }
+
+    const activeCode =
+      findActiveConnectionCodeForCustomer(
+        customerId
+      );
+
+    if (activeCode) {
+      showCurrentConnectionCode(
+        activeCode.code ||
+          activeCode.connectionCode,
+        customerId,
+        selectedOption
+          ? selectedOption.textContent
+          : customerId,
+        activeCode.status
+      );
+      return;
+    }
+
+    hideCurrentConnectionCode();
+  }
+
+
+  /* =======================================================
+     CUSTOMER DROPDOWNS
+  ======================================================= */
+
+  function updateCustomerDropdowns(
+    customers
+  ) {
+    const tokenSelect =
+      document.getElementById(
+        'tokenCustomer'
+      );
+
+    const connectionSelect =
+      document.getElementById(
+        'connectionCustomer'
+      );
+
+    const activeCustomers =
+      (customers || []).filter(
+        function(customer) {
+          return normalizeText(
+            customer &&
+            customer.vipStatus
+          ) === 'فعال';
+        }
+      );
+
+    function fillSelect(
+      select
+    ) {
+      if (!select) {
+        return;
+      }
+
+      const oldValue =
+        normalizeText(
+          select.value
+        );
+
+      select.innerHTML =
+        '';
+
+      const placeholder =
+        document.createElement(
+          'option'
+        );
+
+      placeholder.value =
+        '';
+
+      placeholder.textContent =
+        activeCustomers.length
+          ? 'انتخاب مشتری VIP'
+          : 'مشتری VIP فعالی وجود ندارد';
+
+      select.appendChild(
+        placeholder
+      );
+
+      activeCustomers.forEach(
+        function(customer) {
+          const customerId =
+            getCustomerId(
+              customer
+            );
+
+          const option =
+            document.createElement(
+              'option'
+            );
+
+          option.value =
+            customerId;
+
+          option.dataset.customerId =
+            customerId;
+
+          option.textContent =
+            getCustomerName(
+              customer
+            ) +
+            ' — ' +
+            customerId;
+
+          select.appendChild(
+            option
+          );
+        }
+      );
+
+      /*
+       * اگر قبلاً مشتری انتخاب شده بود،
+       * انتخاب او حفظ می‌شود.
+       */
+      if (
+        oldValue &&
+        activeCustomers.some(
+          function(customer) {
+            return (
+              getCustomerId(
+                customer
+              ) === oldValue
+            );
+          }
+        )
+      ) {
+        select.value =
+          oldValue;
+      }
+    }
+
+    fillSelect(
+      tokenSelect
+    );
+
+    fillSelect(
+      connectionSelect
+    );
+
+    /*
+     * بعد از پر شدن Dropdown،
+     * کد فعال مشتری انتخاب‌شده را نشان می‌دهیم.
+     */
+    showSelectedCustomerConnectionCode();
+  }
+
+
+  /* =======================================================
+     RENDER CUSTOMERS
+  ======================================================= */
+
+  function renderCustomers(
+    customers
+  ) {
+    const container =
+      document.getElementById(
+        'customersList'
+      );
+
+    if (!container) {
+      return;
+    }
+
+    if (
+      !customers ||
+      !customers.length
+    ) {
+      container.innerHTML =
+        '<div class="empty">هنوز مشتری VIP ثبت نشده است.</div>';
+
+      updateCustomerDropdowns(
+        []
+      );
+
+      return;
+    }
+
+    container.innerHTML =
+      customers
+        .map(
+          function(customer) {
+            const status =
+              normalizeText(
+                customer.vipStatus
+              );
+
+            const customerId =
+              getCustomerId(
+                customer
+              );
+
+            return `
+              <div class="customer-card">
+                <div class="item-top">
+                  <div>
+                    <div class="item-name">
+                      ${escapeHtml(
+                        getCustomerName(customer)
+                      )}
+                    </div>
+
+                    <div class="item-meta">
+                      شناسه:
+                      <strong>
+                        ${escapeHtml(customerId)}
+                      </strong>
+                      <br>
+                      موبایل:
+                      ${escapeHtml(
+                        customer.mobile || '—'
+                      )}
+                      <br>
+                      Telegram:
+                      ${escapeHtml(
+                        customer.telegramId || '—'
+                      )}
+                      <br>
+                      تاریخ عضویت:
+                      ${escapeHtml(
+                        customer.joinedAt || '—'
+                      )}
+                      <br>
+                      تعداد نوبت:
+                      ${escapeHtml(
+                        customer.bookingsCount || 0
+                      )}
+                    </div>
+                  </div>
+
+                  <span class="badge ${getStatusClass(status)}">
+                    ${escapeHtml(
+                      status || 'نامشخص'
+                    )}
+                  </span>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="row">
+                  ${
+                    status === 'فعال'
+                      ? `
+                        <button
+                          class="danger"
+                          type="button"
+                          onclick="changeVIPStatus('${escapeHtml(customerId)}', 'غیرفعال')"
+                        >
+                          غیرفعال کردن VIP
+                        </button>
+                      `
+                      : `
+                        <button
+                          class="primary"
+                          type="button"
+                          onclick="changeVIPStatus('${escapeHtml(customerId)}', 'فعال')"
+                        >
+                          فعال کردن VIP
+                        </button>
+                      `
+                  }
+
+                  <button
+                    class="secondary"
+                    type="button"
+                    onclick="copyText('${escapeHtml(customerId)}')"
+                  >
+                    📋 کپی شناسه
+                  </button>
+                </div>
+              </div>
+            `;
+          }
+        )
+        .join('');
+
+    updateCustomerDropdowns(
+      customers
+    );
+  }
+
+
+  /* =======================================================
+     RENDER CONNECTION CODES
+  ======================================================= */
+
+  function renderConnectionCodes(
+    codes
+  ) {
+    const container =
+      document.getElementById(
+        'connectionCodesList'
+      );
+
+    if (!container) {
+      return;
+    }
+
+    connectionCodesCache =
+      Array.isArray(codes)
+        ? codes.slice()
+        : [];
+
+    if (
+      !codes ||
+      !codes.length
+    ) {
+      container.innerHTML =
+        '<div class="empty">هنوز کد اتصالی ثبت نشده است.</div>';
+
+      showSelectedCustomerConnectionCode();
+
+      return;
+    }
+
+    container.innerHTML =
+      codes
+        .slice()
+        .reverse()
+        .map(
+          function(item) {
+            const status =
+              normalizeText(
+                item.status
+              );
+
+            const code =
+              normalizeText(
+                item.code ||
+                item.connectionCode
+              );
+
+            const customerId =
+              normalizeText(
+                item.customerId
+              );
+
+            const telegramId =
+              normalizeText(
+                item.telegramId
+              );
+
+            const canRevoke =
+              status === 'صادرشده';
+
+            return `
+              <div class="code-card">
+                <div class="item-top">
+                  <div>
+                    <div class="item-name">
+                      ${escapeHtml(
+                        customerId ||
+                        'بدون مشتری'
+                      )}
+                    </div>
+
+                    <div class="item-meta">
+                      ایجاد:
+                      ${escapeHtml(
+                        item.createdAt ||
+                        item.createdDate ||
+                        item.issuedAt ||
+                        '—'
+                      )}
+                      <br>
+                      استفاده:
+                      ${escapeHtml(
+                        item.usedAt ||
+                        item.usedDate ||
+                        '—'
+                      )}
+                      <br>
+                      Telegram:
+                      ${escapeHtml(
+                        telegramId ||
+                        '—'
+                      )}
+                    </div>
+                  </div>
+
+                  <span class="badge ${getStatusClass(status)}">
+                    ${escapeHtml(
+                      status ||
+                      'نامشخص'
+                    )}
+                  </span>
+                </div>
+
+                <div class="code-value">
+                  ${escapeHtml(
+                    code ||
+                    '—'
+                  )}
+                </div>
+
+                <div style="
+                  display:grid;
+                  grid-template-columns:1fr 1fr;
+                  gap:8px;
+                  margin-top:10px;
+                ">
+                  <button
+                    class="secondary"
+                    type="button"
+                    onclick="copyText('${escapeHtml(code)}')"
+                  >
+                    📋 کپی کد
+                  </button>
+
+                  ${
+                    canRevoke
+                      ? `
+                        <button
+                          class="danger"
+                          type="button"
+                          onclick="revokeConnectionCode('${escapeHtml(code)}')"
+                        >
+                          لغو کد
+                        </button>
+                      `
+                      : `
+                        <button
+                          class="secondary"
+                          type="button"
+                          disabled
+                        >
+                          ${escapeHtml(
+                            status ||
+                            'غیرفعال'
+                          )}
+                        </button>
+                      `
+                  }
+                </div>
+              </div>
+            `;
+          }
+        )
+        .join('');
+
+    /*
+     * بعد از دریافت لیست،
+     * اگر مشتری انتخاب شده باشد،
+     * کد فعال همان مشتری را بالای صفحه نشان بده.
+     */
+    showSelectedCustomerConnectionCode();
+  }
+
+
+  /* =======================================================
+     RENDER TOKENS
+  ======================================================= */
+
+  function renderTokens(
+    tokens
+  ) {
+    const container =
+      document.getElementById(
+        'tokensList'
+      );
+
+    if (!container) {
+      return;
+    }
+
+    if (
+      !tokens ||
+      !tokens.length
+    ) {
+      container.innerHTML =
+        '<div class="empty">هنوز توکنی صادر نشده است.</div>';
+
+      return;
+    }
+
+    container.innerHTML =
+      tokens
+        .slice()
+        .reverse()
+        .map(
+          function(token) {
+            const status =
+              normalizeText(
+                token.status
+              );
+
+            return `
+              <div class="token-card">
+                <div class="item-top">
+                  <div>
+                    <div class="item-name">
+                      ${escapeHtml(
+                        token.customerId ||
+                        '—'
+                      )}
+                    </div>
+
+                    <div class="item-meta">
+                      تخفیف:
+                      <strong>
+                        ${escapeHtml(
+                          token.discountPercent ||
+                          token.discount ||
+                          0
+                        )}٪
+                      </strong>
+                      <br>
+                      صدور:
+                      ${escapeHtml(
+                        token.issuedAt ||
+                        '—'
+                      )}
+                      <br>
+                      انقضا:
+                      ${escapeHtml(
+                        token.expiresAt ||
+                        '—'
+                      )}
+                      <br>
+                      استفاده:
+                      ${escapeHtml(
+                        token.usedAt ||
+                        '—'
+                      )}
+                    </div>
+                  </div>
+
+                  <span class="badge ${getStatusClass(status)}">
+                    ${escapeHtml(
+                      status ||
+                      'نامشخص'
+                    )}
+                  </span>
+                </div>
+
+                <div class="code-value">
+                  ${escapeHtml(
+                    token.code ||
+                    '—'
+                  )}
+                </div>
+
+                ${
+                  token.trackingCode
+                    ? `
+                      <div class="item-meta">
+                        کد پیگیری:
+                        ${escapeHtml(
+                          token.trackingCode
+                        )}
+                      </div>
+                    `
+                    : ''
+                }
+
+                <button
+                  class="secondary"
+                  type="button"
+                  style="margin-top:10px;"
+                  onclick="copyText('${escapeHtml(token.code || '')}')"
+                >
+                  📋 کپی توکن
+                </button>
+              </div>
+            `;
+          }
+        )
+        .join('');
+  }
+
+
+  /* =======================================================
+     INITIAL DATA
+  ======================================================= */
+
+  function loadInitialAdminData() {
+    if (
+      !window.google ||
+      !google.script ||
+      !google.script.run
+    ) {
+      return;
+    }
+
+    setConnectionStatus(
+      'در حال دریافت اطلاعات پنل...',
+      true
+    );
+
+    google.script.run
+      .withSuccessHandler(
+        function(result) {
+          adminBootInProgress =
+            false;
+
+          if (!result) {
+            setConnectionStatus(
+              'پاسخ خالی از سرور',
+              false
+            );
+
+            showMessage(
+              'اطلاعات اولیه پنل دریافت نشد.',
+              'error'
+            );
+
+            return;
+          }
+
+          if (
+            result.customersSuccess
+          ) {
+            renderCustomers(
+              result.customers ||
+              []
+            );
+          } else {
+            document.getElementById(
+              'customersList'
+            ).innerHTML =
+              '<div class="empty">دریافت مشتریان با خطا مواجه شد.</div>';
+          }
+
+          if (
+            result.tokensSuccess
+          ) {
+            renderTokens(
+              result.tokens ||
+              []
+            );
+          } else {
+            document.getElementById(
+              'tokensList'
+            ).innerHTML =
+              '<div class="empty">دریافت توکن‌ها با خطا مواجه شد.</div>';
+          }
+
+          if (
+            result.connectionCodesSuccess
+          ) {
+            renderConnectionCodes(
+              result.connectionCodes ||
+              []
+            );
+          } else {
+            document.getElementById(
+              'connectionCodesList'
+            ).innerHTML =
+              '<div class="empty">دریافت کدهای اتصال با خطا مواجه شد.</div>';
+          }
+
+          if (
+            result.settingsSuccess &&
+            result.settings
+          ) {
+            const bookingUrl =
+              document.getElementById(
+                'bookingUrl'
+              );
+
+            if (bookingUrl) {
+              bookingUrl.value =
+                result.settings.bookingUrl ||
+                '';
+            }
+          }
+
+          initialDataLoaded =
+            true;
+
+          setConnectionStatus(
+            'پنل آماده است',
+            true
+          );
+
+          if (
+            !result.customersSuccess ||
+            !result.tokensSuccess ||
+            !result.connectionCodesSuccess
+          ) {
+            showMessage(
+              'اطلاعات پنل بارگذاری شد؛ یک یا چند بخش نیاز به بروزرسانی دارد.',
+              'info'
+            );
+          }
+        }
+      )
+      .withFailureHandler(
+        function(error) {
+          adminBootInProgress =
+            false;
+
+          initialDataLoaded =
+            false;
+
+          setConnectionStatus(
+            'خطا در اتصال',
+            false
+          );
+
+          document.getElementById(
+            'customersList'
+          ).innerHTML =
+            '<div class="empty">دریافت اطلاعات اولیه با خطا مواجه شد. دکمه بروزرسانی را بزنید.</div>';
+
+          document.getElementById(
+            'tokensList'
+          ).innerHTML =
+            '<div class="empty">دریافت اطلاعات اولیه با خطا مواجه شد.</div>';
+
+          document.getElementById(
+            'connectionCodesList'
+          ).innerHTML =
+            '<div class="empty">دریافت اطلاعات اولیه با خطا مواجه شد.</div>';
+
+          showMessage(
+            error &&
+            error.message
+              ? error.message
+              : 'خطا در دریافت اطلاعات اولیه پنل.',
+            'error'
+          );
+        }
+      )
+      .getAdminInitialData();
+  }
+
+
+  /* =======================================================
+     BOOT
+  ======================================================= */
+
+  function initializeAdminPanel() {
+    if (
+      initialDataLoaded
+    ) {
+      return;
+    }
+
+    if (
+      adminBootInProgress
+    ) {
+      return;
+    }
+
+    if (
+      !window.google ||
+      !google.script ||
+      !google.script.run
+    ) {
+      return;
+    }
+
+    adminBootInProgress =
+      true;
+
+    loadInitialAdminData();
+  }
+
+
+  (function startAdminBoot() {
+    let attempts = 0;
+    const maxAttempts = 100;
+
+    function waitForGoogleScript() {
+      if (
+        initialDataLoaded
+      ) {
+        return;
+      }
+
+      if (
+        window.google &&
+        google.script &&
+        google.script.run
+      ) {
+        initializeAdminPanel();
+        return;
+      }
+
+      attempts++;
+
+      if (
+        attempts <
+        maxAttempts
+      ) {
+        window.setTimeout(
+          waitForGoogleScript,
+          100
+        );
+
+        return;
+      }
+
+      setConnectionStatus(
+        'ارتباط با پنل برقرار نشد',
+        false
+      );
+
+      const customersList =
+        document.getElementById(
+          'customersList'
+        );
+
+      if (customersList) {
+        customersList.innerHTML =
+          '<div class="empty">ارتباط با پنل برقرار نشد؛ لطفاً صفحه را یک‌بار تازه‌سازی کنید.</div>';
+      }
+    }
+
+    waitForGoogleScript();
+
+    window.addEventListener(
+      'pageshow',
+      function() {
+        if (
+          !initialDataLoaded
+        ) {
+          attempts = 0;
+          waitForGoogleScript();
+        }
+      }
+    );
+  })();
+
+
+  /* =======================================================
+     SETTINGS
+  ======================================================= */
+
+  function saveSettings() {
+    const input =
+      document.getElementById(
+        'bookingUrl'
+      );
+
+    const bookingUrl =
+      input
+        ? normalizeText(
+            input.value
+          )
+        : '';
+
+    if (
+      typeof google ===
+      'undefined' ||
+      !google.script
+    ) {
+      showMessage(
+        'ارتباط با پنل برقرار نیست.',
+        'error'
+      );
+
+      return;
+    }
+
+    google.script.run
+      .withSuccessHandler(
+        function(result) {
+          if (
+            result &&
+            result.success
+          ) {
+            showMessage(
+              'تنظیمات با موفقیت ذخیره شد. ✅',
+              'success'
+            );
+          } else {
+            showMessage(
+              'ذخیره تنظیمات انجام نشد.',
+              'error'
+            );
+          }
+        }
+      )
+      .withFailureHandler(
+        function(error) {
+          showMessage(
+            error &&
+            error.message
+              ? error.message
+              : 'خطا در ذخیره تنظیمات.',
+            'error'
+          );
+        }
+      )
+      .saveVIPSettings({
+        bookingUrl:
+          bookingUrl
+      });
+  }
+
+
+  /* =======================================================
+     ADD CUSTOMER
+  ======================================================= */
+
+  function addCustomer() {
+    const firstName =
+      normalizeText(
+        document.getElementById(
+          'firstName'
+        ).value
+      );
+
+    const lastName =
+      normalizeText(
+        document.getElementById(
+          'lastName'
+        ).value
+      );
+
+    const mobile =
+      normalizeText(
+        document.getElementById(
+          'mobile'
+        ).value
+      );
+
+    const telegramId =
+      normalizeText(
+        document.getElementById(
+          'telegramId'
+        ).value
+      );
+
+    const activateNow =
+      document.getElementById(
+        'activateNow'
+      ).value === 'true';
+
+    if (!firstName) {
+      showMessage(
+        'لطفاً نام را وارد کنید.',
+        'error'
+      );
+
+      return;
+    }
+
+    if (!lastName) {
+      showMessage(
+        'لطفاً نام خانوادگی را وارد کنید.',
+        'error'
+      );
+
+      return;
+    }
+
+    google.script.run
+      .withSuccessHandler(
+        function(result) {
+          if (
+            !result ||
+            !result.success
+          ) {
+            showMessage(
+              'افزودن مشتری انجام نشد.',
+              'error'
+            );
+
+            return;
+          }
+
+          document.getElementById(
+            'firstName'
+          ).value = '';
+
+          document.getElementById(
+            'lastName'
+          ).value = '';
+
+          document.getElementById(
+            'mobile'
+          ).value = '';
+
+          document.getElementById(
+            'telegramId'
+          ).value = '';
+
+          showMessage(
+            'مشتری VIP با موفقیت اضافه شد. ✅',
+            'success'
+          );
+
+          loadCustomers();
+        }
+      )
+      .withFailureHandler(
+        function(error) {
+          showMessage(
+            error &&
+            error.message
+              ? error.message
+              : 'خطا در افزودن مشتری.',
+            'error'
+          );
+        }
+      )
+      .addVIPCustomer(
+        firstName,
+        lastName,
+        mobile,
+        telegramId,
+        activateNow
+      );
+  }
+
+
+  /* =======================================================
+     LOAD CUSTOMERS
+  ======================================================= */
+
+  function loadCustomers(
+    onComplete
+  ) {
+    google.script.run
+      .withSuccessHandler(
+        function(result) {
+          const customers =
+            normalizeCustomersResult(
+              result
+            );
+
+          renderCustomers(
+            customers
+          );
+
+          if (
+            typeof onComplete ===
+            'function'
+          ) {
+            onComplete(
+              customers
+            );
+          }
+        }
+      )
+      .withFailureHandler(
+        function(error) {
+          document.getElementById(
+            'customersList'
+          ).innerHTML =
+            '<div class="empty">خطا در دریافت مشتریان.</div>';
+
+          showMessage(
+            error &&
+            error.message
+              ? error.message
+              : 'خطا در دریافت مشتریان.',
+            'error'
+          );
+
+          if (
+            typeof onComplete ===
+            'function'
+          ) {
+            onComplete(
+              []
+            );
+          }
+        }
+      )
+      .getVIPCustomers();
+  }
+
+
+  function refreshCustomers() {
+    showMessage(
+      'در حال بروزرسانی مشتریان...',
+      'info'
+    );
+
+    loadCustomers(
+      function() {
+        showMessage(
+          'لیست مشتریان بروزرسانی شد. ✅',
+          'success'
+        );
+      }
+    );
+  }
+
+
+  /* =======================================================
+     CHANGE VIP STATUS
+  ======================================================= */
+
+  function changeVIPStatus(
+    customerId,
+    status
+  ) {
+    if (!customerId) {
+      return;
+    }
+
+    google.script.run
+      .withSuccessHandler(
+        function(result) {
+          if (
+            result &&
+            result.success
+          ) {
+            showMessage(
+              'وضعیت VIP تغییر کرد. ✅',
+              'success'
+            );
+
+            loadCustomers();
+          } else {
+            showMessage(
+              'تغییر وضعیت انجام نشد.',
+              'error'
+            );
+          }
+        }
+      )
+      .withFailureHandler(
+        function(error) {
+          showMessage(
+            error &&
+            error.message
+              ? error.message
+              : 'خطا در تغییر وضعیت VIP.',
+            'error'
+          );
+        }
+      )
+      .setVIPStatus(
+        customerId,
+        status
+      );
+  }
+
+
+  /* =======================================================
+     CREATE TOKEN
+  ======================================================= */
+
+  function createToken() {
+    if (
+      tokenCreationInProgress
+    ) {
+      return;
+    }
+
+    const customerId =
+      normalizeText(
+        document.getElementById(
+          'tokenCustomer'
+        ).value
+      );
+
+    const discount =
+      Number(
+        document.getElementById(
+          'discountPercent'
+        ).value
+      );
+
+    if (!customerId) {
+      showMessage(
+        'لطفاً مشتری VIP را انتخاب کنید.',
+        'error'
+      );
+
+      return;
+    }
+
+    tokenCreationInProgress =
+      true;
+
+    const button =
+      document.getElementById(
+        'createTokenButton'
+      );
+
+    if (button) {
+      button.disabled =
+        true;
+
+      button.textContent =
+        '⏳ در حال ایجاد...';
+    }
+
+    const requestId =
+      'REQ-' +
+      Date.now() +
+      '-' +
+      Math.random()
+        .toString(36)
+        .substring(2, 8);
+
+    google.script.run
+      .withSuccessHandler(
+        function(result) {
+          tokenCreationInProgress =
+            false;
+
+          if (button) {
+            button.disabled =
+              false;
+
+            button.textContent =
+              '🎟️ ایجاد توکن';
+          }
+
+          if (
+            result &&
+            result.success
+          ) {
+            showMessage(
+              'توکن با موفقیت ایجاد شد: ' +
+              result.code,
+              'success'
+            );
+
+            loadTokens();
+          } else {
+            showMessage(
+              result &&
+              result.message
+                ? result.message
+                : 'ایجاد توکن انجام نشد.',
+              'error'
+            );
+          }
+        }
+      )
+      .withFailureHandler(
+        function(error) {
+          tokenCreationInProgress =
+            false;
+
+          if (button) {
+            button.disabled =
+              false;
+
+            button.textContent =
+              '🎟️ ایجاد توکن';
+          }
+
+          showMessage(
+            error &&
+            error.message
+              ? error.message
+              : 'خطا در ایجاد توکن.',
+            'error'
+          );
+        }
+      )
+      .createVIPToken(
+        customerId,
+        discount,
+        requestId
+      );
+  }
+
+
+  /* =======================================================
+     LOAD TOKENS
+  ======================================================= */
+
+  function loadTokens() {
+    google.script.run
+      .withSuccessHandler(
+        function(result) {
+          renderTokens(
+            normalizeTokensResult(
+              result
+            )
+          );
+        }
+      )
+      .withFailureHandler(
+        function(error) {
+          document.getElementById(
+            'tokensList'
+          ).innerHTML =
+            '<div class="empty">خطا در دریافت توکن‌ها.</div>';
+
+          showMessage(
+            error &&
+            error.message
+              ? error.message
+              : 'خطا در دریافت توکن‌ها.',
+            'error'
+          );
+        }
+      )
+      .getVIPTokens();
+  }
+
+
+  function refreshTokens() {
+    showMessage(
+      'در حال بروزرسانی توکن‌ها...',
+      'info'
+    );
+
+    google.script.run
+      .withSuccessHandler(
+        function(result) {
+          renderTokens(
+            normalizeTokensResult(
+              result
+            )
+          );
+
+          showMessage(
+            'لیست توکن‌ها بروزرسانی شد. ✅',
+            'success'
+          );
+        }
+      )
+      .withFailureHandler(
+        function(error) {
+          showMessage(
+            error &&
+            error.message
+              ? error.message
+              : 'خطا در بروزرسانی توکن‌ها.',
+            'error'
+          );
+        }
+      )
+      .getVIPTokens();
+  }
+
+
+  /* =======================================================
+     GENERATE CONNECTION CODE
+  ======================================================= */
+
+  function generateConnectionCode() {
+    if (
+      connectionCreationInProgress
+    ) {
+      return;
+    }
+
+    const select =
+      document.getElementById(
+        'connectionCustomer'
+      );
+
+    if (!select) {
+      showMessage(
+        'بخش انتخاب مشتری VIP پیدا نشد.',
+        'error'
+      );
+
+      return;
+    }
+
+    const selectedOption =
+      select.options[
+        select.selectedIndex
+      ];
+
+    let customerId =
+      selectedOption
+        ? normalizeText(
+            selectedOption.value
+          )
+        : normalizeText(
+            select.value
+          );
+
+    if (
+      !customerId &&
+      selectedOption
+    ) {
+      customerId =
+        normalizeText(
+          selectedOption.dataset &&
+          selectedOption.dataset.customerId
+            ? selectedOption.dataset.customerId
+            : ''
+        );
+    }
+
+    if (!customerId) {
+      showMessage(
+        'لطفاً مشتری VIP را انتخاب کنید.',
+        'error'
+      );
+
+      return;
+    }
+
+    const customerName =
+      selectedOption
+        ? normalizeText(
+            selectedOption.textContent
+          )
+        : customerId;
+
+    connectionCreationInProgress =
+      true;
+
+    const button =
+      document.getElementById(
+        'generateConnectionButton'
+      );
+
+    if (button) {
+      button.disabled =
+        true;
+
+      button.textContent =
+        '⏳ در حال ایجاد...';
+    }
+
+    google.script.run
+      .withSuccessHandler(
+        function(result) {
+          connectionCreationInProgress =
+            false;
+
+          if (button) {
+            button.disabled =
+              false;
+
+            button.textContent =
+              '🔐 ایجاد کد اتصال';
+          }
+
+          if (
+            result &&
+            result.success
+          ) {
+
+            /*
+             * مهم‌ترین تغییر:
+             * کد مستقیماً در باکس اختصاصی
+             * همین مشتری نمایش داده می‌شود.
+             */
+            if (
+              result.code
+            ) {
+              showCurrentConnectionCode(
+                result.code,
+                result.customerId ||
+                  customerId,
+                customerName,
+                result.status ||
+                  'صادرشده'
+              );
+
+              showMessage(
+                result.existing
+                  ? 'کد اتصال فعال این مشتری نمایش داده شد. ✅'
+                  : 'کد اتصال با موفقیت ایجاد شد. ✅',
+                'success'
+              );
+            } else {
+              showMessage(
+                result.existing
+                  ? 'برای این مشتری یک کد اتصال فعال از قبل وجود دارد.'
+                  : 'کد اتصال با موفقیت ایجاد شد. ✅',
+                'success'
+              );
+            }
+
+            /*
+             * لیست آرشیو هم بروزرسانی می‌شود.
+             */
+            loadConnectionCodes();
+
+            /*
+             * اطلاعات مشتریان هم مثل قبل
+             * بروزرسانی می‌شود.
+             */
+            loadCustomers();
+
+          } else {
+            showMessage(
+              result &&
+              result.message
+                ? result.message
+                : 'ایجاد کد اتصال انجام نشد.',
+              'error'
+            );
+          }
+        }
+      )
+      .withFailureHandler(
+        function(error) {
+          connectionCreationInProgress =
+            false;
+
+          if (button) {
+            button.disabled =
+              false;
+
+            button.textContent =
+              '🔐 ایجاد کد اتصال';
+          }
+
+          showMessage(
+            error &&
+            error.message
+              ? error.message
+              : 'خطا در ایجاد کد اتصال.',
+            'error'
+          );
+        }
+      )
+      .generateVIPConnectionCode(
+        customerId
+      );
+  }
+
+
+  /* =======================================================
+     LOAD CONNECTION CODES
+  ======================================================= */
+
+  function loadConnectionCodes() {
+    google.script.run
+      .withSuccessHandler(
+        function(result) {
+          renderConnectionCodes(
+            normalizeCodesResult(
+              result
+            )
+          );
+        }
+      )
+      .withFailureHandler(
+        function(error) {
+          document.getElementById(
+            'connectionCodesList'
+          ).innerHTML =
+            '<div class="empty">خطا در دریافت کدهای اتصال.</div>';
+
+          showMessage(
+            error &&
+            error.message
+              ? error.message
+              : 'خطا در دریافت کدهای اتصال.',
+            'error'
+          );
+        }
+      )
+      .getVIPConnectionCodes();
+  }
+
+
+  function refreshConnectionCodes() {
+    showMessage(
+      'در حال بروزرسانی کدهای اتصال...',
+      'info'
+    );
+
+    google.script.run
+      .withSuccessHandler(
+        function(result) {
+          renderConnectionCodes(
+            normalizeCodesResult(
+              result
+            )
+          );
+
+          showMessage(
+            'کدهای اتصال بروزرسانی شدند. ✅',
+            'success'
+          );
+        }
+      )
+      .withFailureHandler(
+        function(error) {
+          showMessage(
+            error &&
+            error.message
+              ? error.message
+              : 'خطا در بروزرسانی کدهای اتصال.',
+            'error'
+          );
+        }
+      )
+      .getVIPConnectionCodes();
+  }
+
+
+  /* =======================================================
+     REVOKE CONNECTION CODE
+  ======================================================= */
+
+  function revokeConnectionCode(
+    code
+  ) {
+    if (!code) {
+      return;
+    }
+
+    const confirmed =
+      window.confirm(
+        'آیا از لغو این کد اتصال مطمئن هستید؟'
+      );
+
+    if (!confirmed) {
+      return;
+    }
+
+    google.script.run
+      .withSuccessHandler(
+        function(result) {
+          if (
+            result &&
+            result.success
+          ) {
+            showMessage(
+              'کد اتصال باطل شد. ✅',
+              'success'
+            );
+
+            loadConnectionCodes();
+          } else {
+            showMessage(
+              'لغو کد انجام نشد.',
+              'error'
+            );
+          }
+        }
+      )
+      .withFailureHandler(
+        function(error) {
+          showMessage(
+            error &&
+            error.message
+              ? error.message
+              : 'خطا در لغو کد اتصال.',
+            'error'
+          );
+        }
+      )
+      .revokeVIPConnectionCode(
+        code
+      );
+  }
+
+
+  /* =======================================================
+     CONNECTION CUSTOMER CHANGE
+  ======================================================= */
+
+  document.addEventListener(
+    'change',
+    function(event) {
+      if (
+        event.target &&
+        event.target.id ===
+          'connectionCustomer'
+      ) {
+        showSelectedCustomerConnectionCode();
+      }
+    }
+  );
+
+
+  /* =======================================================
+     COPY
+  ======================================================= */
+
+  function copyText(
+    text
+  ) {
+    const value =
+      String(
+        text || ''
+      );
+
+    if (!value) {
+      return;
+    }
+
+    if (
+      navigator.clipboard &&
+      navigator.clipboard.writeText
+    ) {
+      navigator.clipboard
+        .writeText(
+          value
+        )
+        .then(
+          function() {
+            showMessage(
+              'کپی شد. 📋',
+              'success'
+            );
+          }
+        )
+        .catch(
+          function() {
+            fallbackCopy(
+              value
+            );
+          }
+        );
+
+      return;
+    }
+
+    fallbackCopy(
+      value
+    );
+  }
+
+
+  function fallbackCopy(
+    text
+  ) {
+    const textarea =
+      document.createElement(
+        'textarea'
+      );
+
+    textarea.value =
+      text;
+
+    textarea.style.position =
+      'fixed';
+
+    textarea.style.opacity =
+      '0';
+
+    document.body.appendChild(
+      textarea
+    );
+
+    textarea.focus();
+    textarea.select();
+
+    try {
+      document.execCommand(
+        'copy'
+      );
+
+      showMessage(
+        'کپی شد. 📋',
+        'success'
+      );
+    } catch (error) {
+      showMessage(
+        'کپی انجام نشد؛ لطفاً کد را دستی انتخاب کنید.',
+        'error'
+      );
+    }
+
+    document.body.removeChild(
+      textarea
+    );
+  }
+</script>
+
+</body>
+</html>
