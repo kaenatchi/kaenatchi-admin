@@ -3027,6 +3027,54 @@
 
 
   /* =======================================================
+     CONNECTION ERROR DIAGNOSTICS
+     -------------------------------------------------------
+     فقط خطای واقعی google.script.run را قابل مشاهده می‌کند.
+     هیچ Backend/منطق VIP را تغییر نمی‌دهد.
+  ======================================================= */
+
+  function formatVIPConnectionError(error) {
+    if (!error) {
+      return 'خطای نامشخص';
+    }
+
+    if (typeof error === 'string') {
+      return error;
+    }
+
+    const message =
+      error.message
+        ? String(error.message)
+        : '';
+
+    const name =
+      error.name
+        ? String(error.name)
+        : '';
+
+    if (message && name) {
+      return name + ': ' + message;
+    }
+
+    return message ||
+      name ||
+      'خطای نامشخص در اجرای تابع getVIPConnectionCodes';
+  }
+
+
+  function escapeHtml(value) {
+    return String(
+      value || ''
+    )
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+
+  /* =======================================================
      LOAD CONNECTION CODES
   ======================================================= */
 
@@ -3043,16 +3091,21 @@
       )
       .withFailureHandler(
         function(error) {
+          const detail =
+            formatVIPConnectionError(
+              error
+            );
+
           document.getElementById(
             'connectionCodesList'
           ).innerHTML =
-            '<div class="empty">خطا در دریافت کدهای اتصال.</div>';
+            '<div class="empty">خطا در دریافت کدهای اتصال.<br><small>' +
+            escapeHtml(detail) +
+            '</small></div>';
 
           showMessage(
-            error &&
-            error.message
-              ? error.message
-              : 'خطا در دریافت کدهای اتصال.',
+            'خطا در دریافت کدهای اتصال: ' +
+            detail,
             'error'
           );
         }
@@ -3084,11 +3137,14 @@
       )
       .withFailureHandler(
         function(error) {
+          const detail =
+            formatVIPConnectionError(
+              error
+            );
+
           showMessage(
-            error &&
-            error.message
-              ? error.message
-              : 'خطا در بروزرسانی کدهای اتصال.',
+            'خطا در بروزرسانی کدهای اتصال: ' +
+            detail,
             'error'
           );
         }
