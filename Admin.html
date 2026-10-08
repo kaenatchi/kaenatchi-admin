@@ -3174,6 +3174,102 @@
 
 
   /* =======================================================
+     VIP TABS — UI ONLY
+     -------------------------------------------------------
+     فقط نمایش/مخفی‌سازی بخش‌های موجود را کنترل می‌کند.
+     هیچ google.script.run یا منطق تجاری VIP را تغییر نمی‌دهد.
+  ======================================================= */
+
+  function switchVIPTab(tabName) {
+    const sections = document.querySelectorAll(
+      '[data-vip-section]'
+    );
+
+    sections.forEach(function(section) {
+      const isVisible =
+        section.getAttribute('data-vip-section') === tabName;
+
+      section.classList.toggle(
+        'vip-tab-visible',
+        isVisible
+      );
+    });
+
+    const tabs = document.querySelectorAll(
+      '[data-vip-tab]'
+    );
+
+    tabs.forEach(function(tab) {
+      const isActive =
+        tab.getAttribute('data-vip-tab') === tabName;
+
+      tab.classList.toggle(
+        'active',
+        isActive
+      );
+
+      tab.setAttribute(
+        'aria-selected',
+        isActive ? 'true' : 'false'
+      );
+    });
+
+    try {
+      localStorage.setItem(
+        'kaenatchi_vip_admin_tab',
+        tabName
+      );
+    } catch (error) {
+      // ذخیره انتخاب تب اختیاری است؛ خطا نباید روی پنل اثر بگذارد.
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+
+
+  function initializeVIPTabs() {
+    let initialTab = 'customers';
+
+    try {
+      const savedTab =
+        localStorage.getItem(
+          'kaenatchi_vip_admin_tab'
+        );
+
+      const validTabs = [
+        'customers',
+        'add',
+        'discount',
+        'connection',
+        'settings'
+      ];
+
+      if (
+        savedTab &&
+        validTabs.indexOf(savedTab) !== -1
+      ) {
+        initialTab = savedTab;
+      }
+    } catch (error) {
+      // در صورت نبود دسترسی به localStorage، تب پیش‌فرض استفاده می‌شود.
+    }
+
+    switchVIPTab(initialTab);
+  }
+
+
+  document.addEventListener(
+    'DOMContentLoaded',
+    function() {
+      initializeVIPTabs();
+    }
+  );
+
+
+  /* =======================================================
      COPY
   ======================================================= */
 
