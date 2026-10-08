@@ -445,6 +445,66 @@
       }
     }
 
+    /* =======================================================
+       VIP TABS — UI ONLY
+       ======================================================= */
+
+    .vip-tabs {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+      position: sticky;
+      top: 8px;
+      z-index: 20;
+      padding: 7px;
+      border-radius: 18px;
+      background: rgba(244, 240, 231, 0.94);
+      border: 1px solid rgba(53, 59, 50, 0.06);
+      box-shadow: 0 8px 22px rgba(53, 59, 50, 0.08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .vip-tab {
+      width: 100%;
+      min-height: 43px;
+      padding: 8px 7px;
+      border-radius: 13px;
+      background: transparent;
+      color: #6f756c;
+      box-shadow: none;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .vip-tab.active {
+      color: #fff;
+      background: linear-gradient(135deg, #174b38, #2c7658);
+      box-shadow: 0 6px 14px rgba(23, 75, 56, 0.20);
+    }
+
+    .vip-tab-section {
+      display: none;
+    }
+
+    .vip-tab-section.vip-tab-visible {
+      display: block;
+    }
+
+    @media (max-width: 620px) {
+      .vip-tabs {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 380px) {
+      .vip-tabs {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
     .status-line {
       display: flex;
       align-items: center;
@@ -528,8 +588,17 @@
     class="message"
   ></div>
 
+  <!-- UI-ONLY NAVIGATION -->
+  <nav class="vip-tabs" aria-label="بخش‌های پنل VIP">
+    <button class="vip-tab" type="button" data-vip-tab="customers" onclick="switchVIPTab('customers')">👥<br>مشتریان</button>
+    <button class="vip-tab" type="button" data-vip-tab="add" onclick="switchVIPTab('add')">➕<br>افزودن</button>
+    <button class="vip-tab" type="button" data-vip-tab="discount" onclick="switchVIPTab('discount')">🎟️<br>تخفیف</button>
+    <button class="vip-tab" type="button" data-vip-tab="connection" onclick="switchVIPTab('connection')">🔐<br>اتصال</button>
+    <button class="vip-tab" type="button" data-vip-tab="settings" onclick="switchVIPTab('settings')">⚙️<br>تنظیمات</button>
+  </nav>
+
   <!-- SETTINGS -->
-  <section class="card">
+  <section id="vipTabSettings" class="card vip-tab-section" data-vip-section="settings">
     <div class="card-title">
       ⚙️ تنظیمات
     </div>
@@ -557,7 +626,7 @@
   </section>
 
   <!-- ADD CUSTOMER -->
-  <section class="card">
+  <section id="vipTabAdd" class="card vip-tab-section" data-vip-section="add">
     <div class="card-title">
       ➕ افزودن مشتری VIP
     </div>
@@ -646,7 +715,7 @@
   </section>
 
   <!-- CREATE TOKEN -->
-  <section class="card">
+  <section id="vipTabDiscount" class="card vip-tab-section" data-vip-section="discount">
     <div class="card-title">
       🎟️ ایجاد توکن تخفیف
     </div>
@@ -698,7 +767,7 @@
   </section>
 
   <!-- CONNECTION CODE -->
-  <section class="card">
+  <section id="vipTabConnection" class="card vip-tab-section" data-vip-section="connection">
     <div class="card-title">
       🔐 کد اتصال VIP
     </div>
@@ -771,7 +840,7 @@
   </section>
 
   <!-- CUSTOMERS -->
-  <section class="card">
+  <section id="vipTabCustomers" class="card vip-tab-section" data-vip-section="customers">
     <div class="section-header">
       <div class="card-title">
         👥 مشتریان VIP
@@ -795,7 +864,7 @@
   </section>
 
   <!-- CONNECTION CODES -->
-  <section class="card">
+  <section id="vipTabConnectionCodes" class="card vip-tab-section" data-vip-section="connection">
     <div class="section-header">
       <div class="card-title">
         🔐 کدهای اتصال
@@ -819,7 +888,7 @@
   </section>
 
   <!-- TOKENS -->
-  <section class="card">
+  <section id="vipTabTokens" class="card vip-tab-section" data-vip-section="discount">
     <div class="section-header">
       <div class="card-title">
         🎟️ توکن‌ها
@@ -2101,6 +2170,73 @@
       )
       .getAdminInitialData();
   }
+
+
+  /* =======================================================
+     VIP TABS — UI ONLY
+     هیچ تابع Backend یا Business Logic در این بخش تغییر نکرده است.
+  ======================================================= */
+
+  function switchVIPTab(tabName) {
+    const validTabs = [
+      'customers',
+      'add',
+      'discount',
+      'connection',
+      'settings'
+    ];
+
+    if (!validTabs.includes(tabName)) {
+      tabName = 'customers';
+    }
+
+    document.querySelectorAll('.vip-tab-section').forEach(function(section) {
+      const sectionTab = section.getAttribute('data-vip-section');
+      section.classList.toggle(
+        'vip-tab-visible',
+        sectionTab === tabName
+      );
+    });
+
+    document.querySelectorAll('.vip-tab').forEach(function(button) {
+      button.classList.toggle(
+        'active',
+        button.getAttribute('data-vip-tab') === tabName
+      );
+    });
+
+    try {
+      window.localStorage.setItem(
+        'kaenatchi_vip_admin_tab',
+        tabName
+      );
+    } catch (error) {
+      /* UI preference only — ignore storage errors. */
+    }
+  }
+
+
+  function initializeVIPTabs() {
+    let initialTab = 'customers';
+
+    try {
+      const savedTab =
+        window.localStorage.getItem(
+          'kaenatchi_vip_admin_tab'
+        );
+
+      if (savedTab) {
+        initialTab = savedTab;
+      }
+    } catch (error) {
+      /* UI preference only — use default tab. */
+    }
+
+    switchVIPTab(initialTab);
+  }
+
+
+  initializeVIPTabs();
 
 
   /* =======================================================
