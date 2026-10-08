@@ -2089,10 +2089,27 @@
               []
             );
           } else {
-            document.getElementById(
-              'connectionCodesList'
-            ).innerHTML =
-              '<div class="empty">دریافت کدهای اتصال با خطا مواجه شد.</div>';
+            /*
+             * مسیر تجمیعی getAdminInitialData ممکن است
+             * برای بخش کدهای اتصال وضعیت خطا برگرداند،
+             * در حالی که خود getVIPConnectionCodes()
+             * به‌صورت مستقل سالم است.
+             *
+             * برای اینکه UI به خطای تجمیعی وابسته نباشد،
+             * لیست کدهای اتصال را مستقیماً دوباره می‌خوانیم.
+             * هیچ Backend یا Business Logic تغییر نمی‌کند.
+             */
+            const connectionCodesList =
+              document.getElementById(
+                'connectionCodesList'
+              );
+
+            if (connectionCodesList) {
+              connectionCodesList.innerHTML =
+                '<div class="loading"><span class="spinner"></span>در حال دریافت مستقیم کدهای اتصال...</div>';
+            }
+
+            loadConnectionCodes();
           }
 
           if (
