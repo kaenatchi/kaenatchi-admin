@@ -510,76 +510,69 @@ function getAdminInitialData() {
     customersSuccess: false,
     tokensSuccess: false,
     connectionCodesSuccess: false,
-    settingsSuccess: false
+    settingsSuccess: false,
+    customersError: '',
+    tokensError: '',
+    connectionCodesError: '',
+    settingsError: ''
   };
+
   try {
-    const customersResult =
-      getVIPCustomers();
-    if (
-      customersResult &&
-      customersResult.success
-    ) {
-      result.customers =
-        customersResult.customers || [];
-      result.customersSuccess =
-        true;
+    const customersResult = getVIPCustomers();
+    if (customersResult && customersResult.success) {
+      result.customers = customersResult.customers || [];
+      result.customersSuccess = true;
+    } else {
+      result.customersError = 'پاسخ خواندن مشتریان معتبر نبود.';
     }
   } catch (err) {
-    result.customersSuccess =
-      false;
+    result.customersSuccess = false;
+    result.customersError = String(err && err.message ? err.message : err);
   }
+
   try {
-    const tokensResult =
-      getVIPTokens();
-    if (
-      tokensResult &&
-      tokensResult.success
-    ) {
-      result.tokens =
-        tokensResult.tokens || [];
-      result.tokensSuccess =
-        true;
+    const tokensResult = getVIPTokens();
+    if (tokensResult && tokensResult.success) {
+      result.tokens = tokensResult.tokens || [];
+      result.tokensSuccess = true;
+    } else {
+      result.tokensError = 'پاسخ خواندن توکن‌ها معتبر نبود.';
     }
   } catch (err) {
-    result.tokensSuccess =
-      false;
+    result.tokensSuccess = false;
+    result.tokensError = String(err && err.message ? err.message : err);
   }
+
   try {
-    const codesResult =
-      getVIPConnectionCodes();
-    if (
-      codesResult &&
-      codesResult.success
-    ) {
-      result.connectionCodes =
-        codesResult.codes || [];
-      result.connectionCodesSuccess =
-        true;
+    const codesResult = getVIPConnectionCodes();
+    if (codesResult && codesResult.success) {
+      result.connectionCodes = codesResult.codes || [];
+      result.connectionCodesSuccess = true;
+    } else if (Array.isArray(codesResult)) {
+      result.connectionCodes = codesResult;
+      result.connectionCodesSuccess = true;
+    } else {
+      result.connectionCodesError = 'پاسخ خواندن کدهای اتصال معتبر نبود.';
     }
   } catch (err) {
-    result.connectionCodesSuccess =
-      false;
+    result.connectionCodesSuccess = false;
+    result.connectionCodesError = String(err && err.message ? err.message : err);
   }
+
   try {
-    const settingsResult =
-      getVIPSettings();
-    if (
-      settingsResult &&
-      settingsResult.success
-    ) {
-      result.settings =
-        settingsResult.settings || {};
-      result.settingsSuccess =
-        true;
+    const settingsResult = getVIPSettings();
+    if (settingsResult && settingsResult.success) {
+      result.settings = settingsResult.settings || {};
+      result.settingsSuccess = true;
+    } else {
+      result.settingsError = 'پاسخ خواندن تنظیمات معتبر نبود.';
     }
   } catch (err) {
-    result.settings = {
-      bookingUrl:
-        'https://kaenatchi.github.io/booking/'
-    };
-    result.settingsSuccess =
-      true;
+    result.settingsError = String(err && err.message ? err.message : err);
+    result.settings = {};
+    result.settingsSuccess = false;
   }
+
   return result;
 }
 function testAdminInitialData() {

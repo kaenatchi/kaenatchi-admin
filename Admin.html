@@ -2064,7 +2064,9 @@
             document.getElementById(
               'customersList'
             ).innerHTML =
-              '<div class="empty">دریافت مشتریان با خطا مواجه شد.</div>';
+              '<div class="empty">دریافت مشتریان با خطا مواجه شد.<br><small>' +
+              escapeHtml(result.customersError || 'جزئیات خطا از سرور دریافت نشد.') +
+              '</small></div>';
           }
 
           if (
@@ -2078,7 +2080,9 @@
             document.getElementById(
               'tokensList'
             ).innerHTML =
-              '<div class="empty">دریافت توکن‌ها با خطا مواجه شد.</div>';
+              '<div class="empty">دریافت توکن‌ها با خطا مواجه شد.<br><small>' +
+              escapeHtml(result.tokensError || 'جزئیات خطا از سرور دریافت نشد.') +
+              '</small></div>';
           }
 
           if (
@@ -2106,10 +2110,10 @@
 
             if (connectionCodesList) {
               connectionCodesList.innerHTML =
-                '<div class="loading"><span class="spinner"></span>در حال دریافت مستقیم کدهای اتصال...</div>';
+                '<div class="empty">دریافت کدهای اتصال با خطا مواجه شد.<br><small>' +
+                escapeHtml(result.connectionCodesError || 'جزئیات خطا از سرور دریافت نشد.') +
+                '</small></div>';
             }
-
-            loadConnectionCodes();
           }
 
           if (

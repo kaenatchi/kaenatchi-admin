@@ -12,45 +12,14 @@ const VIP_CONNECTION_CODE_LENGTH = 6;
  * اگر شیت وجود نداشته باشد، خودکار ساخته می‌شود.
  */
 function getVIPConnectionSheet_() {
-
-  const ss =
-    SpreadsheetApp.openById(
-      VIP_SHEET_ID
-    );
-
-  let sheet =
-    ss.getSheetByName(
-      VIP_CONNECTION_SHEET
-    );
-
+  const ss = SpreadsheetApp.openById(VIP_SHEET_ID);
+  const sheet = ss.getSheetByName(VIP_CONNECTION_SHEET);
   if (!sheet) {
-
-    sheet =
-      ss.insertSheet(
-        VIP_CONNECTION_SHEET
-      );
-
-    sheet
-      .getRange(
-        1,
-        1,
-        1,
-        8
-      )
-      .setValues([[
-        'کد اتصال',
-        'شناسه مشتری',
-        'وضعیت',
-        'تاریخ ایجاد',
-        'تاریخ استفاده',
-        'Telegram ID',
-        'زمان سیستم ایجاد',
-        'زمان سیستم استفاده'
-      ]]);
-
-    sheet.setFrozenRows(1);
+    throw new Error(
+      'شیت «' + VIP_CONNECTION_SHEET +
+      '» پیدا نشد. برای جلوگیری از تغییر خودکار داده‌ها، شیت جدید ساخته نشد.'
+    );
   }
-
   return sheet;
 }
 
@@ -518,7 +487,7 @@ function generateVIPConnectionCode(
 /**
  * دریافت تمام کدهای اتصال برای پنل مدیریت
  */
-function getVIPConnectionCodes() {
+function getVIPConnectionCodesLegacy_() {
 
   const sheet =
     getVIPConnectionSheet_();
